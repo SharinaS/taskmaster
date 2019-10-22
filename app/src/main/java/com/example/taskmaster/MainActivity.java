@@ -14,20 +14,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // === Buttons that move from view to view ===
         Button goToAddTaskButton = findViewById(R.id.goAddTaskButton);
         goToAddTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View event) {
-                Intent goToAddTask = new Intent (MainActivity.this, AddTask.class);
-                MainActivity.this.startActivity(goToAddTask);
+                Intent goToAddTaskView = new Intent (MainActivity.this, AddTask.class);
+                MainActivity.this.startActivity(goToAddTaskView);
+            }
+        });
+
+        Button goToAllTasksButton = findViewById(R.id.goAllTasksButton);
+        goToAllTasksButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View event) {
+                Intent goToAllTasksView = new Intent (MainActivity.this, AllTasks.class);
+                MainActivity.this.startActivity(goToAllTasksView);
             }
         });
     }
 
-
-//    utton addTaskButton = findViewById(R.id.ButtonTaskAdd);
-//        addTaskButton.setOnClickListener((event) -> {
-//        Intent goToAddTask = new Intent(MainActivity.this, AddTask.class);
-//        MainActivity.this.startActivity(goToAddTask);
-//    });
 }
