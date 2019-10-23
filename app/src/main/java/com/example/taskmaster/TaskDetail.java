@@ -12,7 +12,7 @@ public class TaskDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
 
-
+        // == Accesses Extra Data From MainActivity Buttons ==
         // get the data added to the intent & use it to display this activity
         String task = getIntent().getStringExtra("task");
 
