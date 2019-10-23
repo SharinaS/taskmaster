@@ -2,6 +2,7 @@ package com.example.taskmaster;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -23,11 +24,17 @@ public class Settings extends AppCompatActivity {
         // grab what the user typed in
         EditText nameEditText = findViewById(R.id.enterUsername);
         String name = nameEditText.getText().toString();
+
         // grab the SharedPreference in which to save the data
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        
         // save the data
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("username", name);
         editor.apply();
+
+        // Send user back to the Main Page
+        Intent goToMainActivity = new Intent (this, MainActivity.class);
+        this.startActivity(goToMainActivity);
     }
 }
