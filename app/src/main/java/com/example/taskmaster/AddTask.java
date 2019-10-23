@@ -15,8 +15,10 @@ public class AddTask extends AppCompatActivity {
         setContentView(R.layout.activity_add_task);
 
         Button buttonAddTask = findViewById((R.id.addTaskButton));
+
         // add event listener to the button
         buttonAddTask.setOnClickListener(new View.OnClickListener() {
+
             // make text Submitted! appear with button click
             @Override
             public void onClick(View event) {
