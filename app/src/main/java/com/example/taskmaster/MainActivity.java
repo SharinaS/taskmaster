@@ -48,11 +48,30 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(goToAllTasksView);
             }
         });
+
+        // Task Button called Go Food Shopping should send user to detail view and show new Task Title
+        final Button foodShoppingTaskButton = findViewById(R.id.taskShopping);
+        foodShoppingTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View event) {
+                // go to the other activity... create the intent to start that activity
+                Intent goTofoodShoppingTaskDetail = new Intent(MainActivity.this, TaskDetail.class);
+
+                // add extra info about that task
+                goTofoodShoppingTaskDetail.putExtra("task", foodShoppingTaskButton.getText().toString());
+
+                // start the activity
+                MainActivity.this.startActivity(goTofoodShoppingTaskDetail);
+            }
+        });
     }
 
+    // Starts activity over in Settings
     public void goToSettingsActivity(View v) {
         Intent i = new Intent(this, Settings.class);
         this.startActivity(i);
     }
+
+
 
 }
