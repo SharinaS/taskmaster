@@ -10,8 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
+    private List<Task> tasks;
 
     @Override
     protected void onResume() {
@@ -28,6 +32,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Hardcoded Tasks for Recycler View
+        this.tasks = new LinkedList<>();
+        tasks.add(new Task("Lab Homework", "Finish Thurs Lab"));
+        tasks.add(new Task("Workout", "Take a walk today"));
+        tasks.add(new Task("Retro Homework", "Do Retro for Thurs lab"));
+
 
         // Button that takes user to Add Task Page
         Button goToAddTaskButton = findViewById(R.id.goAddTaskButton);
