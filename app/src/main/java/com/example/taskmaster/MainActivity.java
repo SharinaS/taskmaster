@@ -60,56 +60,56 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Task Button called Go Food Shopping should send user to detail view and show new Task Title
-        final Button foodShoppingTaskButton = findViewById(R.id.taskShopping);
-        foodShoppingTaskButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View event) {
-                // go to the other activity... create the intent to start that activity
-                Intent goTofoodShoppingTaskDetail = new Intent(MainActivity.this, TaskDetail.class);
-
-                // add extra info about that task
-                goTofoodShoppingTaskDetail.putExtra("task", foodShoppingTaskButton.getText().toString());
-
-                // start the activity
-                MainActivity.this.startActivity(goTofoodShoppingTaskDetail);
-            }
-        });
-
-        // Second Task Button - Homework To Do - stores extra info and sends user to Details Page
-        final Button homeworkToDoButton = findViewById(R.id.taskDoHomework);
-        homeworkToDoButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View event) {
-                // go to the other activity... create the intent to start that activity
-                Intent homeworkTask = new Intent(MainActivity.this, TaskDetail.class);
-
-                // add extra info about that task
-                homeworkTask.putExtra("task", homeworkToDoButton.getText().toString());
-
-                // start the activity
-                MainActivity.this.startActivity(homeworkTask);
-            }
-        });
-
-        // Third task button - Workout Goals - stores extra info and sends user to Details Page
-        final Button workoutGoalsButton = findViewById(R.id.taskWorkout);
-        workoutGoalsButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View event) {
-                // go to the other activity... create the intent to start that activity
-                Intent workoutGoalsTask = new Intent(MainActivity.this, TaskDetail.class);
-
-                // add extra info about that task
-                workoutGoalsTask.putExtra("task", workoutGoalsButton.getText().toString());
-
-                // start the activity
-                MainActivity.this.startActivity(workoutGoalsTask);
-            }
-        });
+//        // Task Button called Go Food Shopping should send user to detail view and show new Task Title
+//        final Button foodShoppingTaskButton = findViewById(R.id.taskShopping);
+//        foodShoppingTaskButton.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View event) {
+//                // go to the other activity... create the intent to start that activity
+//                Intent goTofoodShoppingTaskDetail = new Intent(MainActivity.this, TaskDetail.class);
+//
+//                // add extra info about that task
+//                goTofoodShoppingTaskDetail.putExtra("task", foodShoppingTaskButton.getText().toString());
+//
+//                // start the activity
+//                MainActivity.this.startActivity(goTofoodShoppingTaskDetail);
+//            }
+//        });
+//
+//        // Second Task Button - Homework To Do - stores extra info and sends user to Details Page
+//        final Button homeworkToDoButton = findViewById(R.id.taskDoHomework);
+//        homeworkToDoButton.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View event) {
+//                // go to the other activity... create the intent to start that activity
+//                Intent homeworkTask = new Intent(MainActivity.this, TaskDetail.class);
+//
+//                // add extra info about that task
+//                homeworkTask.putExtra("task", homeworkToDoButton.getText().toString());
+//
+//                // start the activity
+//                MainActivity.this.startActivity(homeworkTask);
+//            }
+//        });
+//
+//        // Third task button - Workout Goals - stores extra info and sends user to Details Page
+//        final Button workoutGoalsButton = findViewById(R.id.taskWorkout);
+//        workoutGoalsButton.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View event) {
+//                // go to the other activity... create the intent to start that activity
+//                Intent workoutGoalsTask = new Intent(MainActivity.this, TaskDetail.class);
+//
+//                // add extra info about that task
+//                workoutGoalsTask.putExtra("task", workoutGoalsButton.getText().toString());
+//
+//                // start the activity
+//                MainActivity.this.startActivity(workoutGoalsTask);
+//            }
+//        });
     }
 
     // Starts activity over in Settings
@@ -117,7 +117,4 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this, Settings.class);
         this.startActivity(i);
     }
-
-
-
 }
