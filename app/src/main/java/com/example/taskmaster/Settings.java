@@ -27,7 +27,7 @@ public class Settings extends AppCompatActivity {
 
         // grab the SharedPreference in which to save the data
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        
+
         // save the data
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("username", name);
