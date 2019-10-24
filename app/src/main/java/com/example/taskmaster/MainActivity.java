@@ -2,6 +2,8 @@ package com.example.taskmaster;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,6 +40,13 @@ public class MainActivity extends AppCompatActivity {
         tasks.add(new Task("Lab Homework", "Finish Thurs Lab"));
         tasks.add(new Task("Workout", "Take a walk today"));
         tasks.add(new Task("Retro Homework", "Do Retro for Thurs lab"));
+
+        // Render Task Items to the screen, in RecyclerView
+        // starter code at: // https://developer.android.com/guide/topics/ui/layout/recyclerview
+        RecyclerView recyclerView = findViewById(R.id.tasks);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // Specify an Adapter
+        recyclerView.setAdapter(new TaskAdapter());
 
 
         // Button that takes user to Add Task Page
