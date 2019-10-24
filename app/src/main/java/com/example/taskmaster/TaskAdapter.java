@@ -8,12 +8,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
+    public List<Task> tasks;
+    private OnTaskItemInteractionListener listener;
+
+    public TaskAdapter(List<Task> tasks, OnTaskItemInteractionListener listener) {
+        this.tasks = tasks;
+        this.listener = listener;
+    }
 
     // view holder holds onto the view data that you need.
     public static class TaskViewHolder extends RecyclerView.ViewHolder {
-
+        Task task;
         TextView itemTitleView;
         TextView itemBodyView;
 
@@ -31,7 +40,15 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_task, parent, false);
-        TaskViewHolder holder = new TaskViewHolder((v));
+        final TaskViewHolder holder = new TaskViewHolder((v));
+
+        // Set an OnClick Listener
+        v.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                listener.taskItemClickedOn(holder.task);
+            }
+        });
         return holder;
     }
 
@@ -39,12 +56,20 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
     // RecyclerView has a row that needs to be updated for a particular location/index
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
-
+        Task taskAtPosition = this.tasks.get(position);
+        holder.task = taskAtPosition;
+        holder.itemTitleView.setText(taskAtPosition.getTitle());
+        holder.itemBodyView.setText(taskAtPosition.getBody());
 
     }
 
     @Override
     public int getItemCount() {
         return 3;
+    }
+
+    // Allow adapter to communicate with any activity that it's a part of that implements this interface
+    public static interface OnTaskItemInteractionListener {
+        public void taskItemClickedOn(Task task);
     }
 }

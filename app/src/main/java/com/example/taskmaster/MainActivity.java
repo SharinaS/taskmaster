@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTaskItemInteractionListener {
 
     private List<Task> tasks;
 
@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Hardcoded Tasks for Recycler View
         this.tasks = new LinkedList<>();
+
         tasks.add(new Task("Lab Homework", "Finish Thurs Lab"));
         tasks.add(new Task("Workout", "Take a walk today"));
         tasks.add(new Task("Retro Homework", "Do Retro for Thurs lab"));
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.tasks);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // Specify an Adapter
-        recyclerView.setAdapter(new TaskAdapter());
+        recyclerView.setAdapter(new TaskAdapter(tasks, this));
 
 
         // Button that takes user to Add Task Page
@@ -125,5 +126,18 @@ public class MainActivity extends AppCompatActivity {
     public void goToSettingsActivity(View v) {
         Intent i = new Intent(this, Settings.class);
         this.startActivity(i);
+    }
+
+    @Override
+    public void taskItemClickedOn(Task task) {
+        // go to the other activity... create the intent to start that activity
+        Intent workoutGoalsTask = new Intent(MainActivity.this, TaskDetail.class);
+
+        // add extra info about that task
+        workoutGoalsTask.putExtra("task", task.getTitle());
+
+        // start the activity
+        MainActivity.this.startActivity(workoutGoalsTask);
+
     }
 }
