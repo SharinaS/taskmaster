@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +19,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTaskItemInteractionListener {
 
     private List<Task> tasks;
+    public AppDatabase db;
+
+    private RecyclerView.Adapter taskAdapter;
 
     @Override
     protected void onResume() {
@@ -27,20 +31,21 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         String username = prefs.getString("username", "user");
         TextView nameTextView = findViewById(R.id.helloTextView);
         nameTextView.setText("Hello " + username + "!");
-    }
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        // Database Info with database name of taskmaster
+        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "taskmaster")
+                .allowMainThreadQueries().build();
 
         // List of Tasks for Recycler View
         this.tasks = new LinkedList<>();
 
-        tasks.add(new Task("Lab Homework", "Finish Thurs Lab"));
-        tasks.add(new Task("Workout", "Take a walk today"));
-        tasks.add(new Task("Retro Homework", "Do Retro for Thurs lab"));
+        // get everything from the database (addAll is a built in method) then add all that stuff to the list.
+        // We're returning the list from getall, which is being added to tasks.
+        this.tasks.addAll(db.taskDao().getall());
+
+//        tasks.add(new Task("Lab Homework", "Finish Thurs Lab"));
+//        tasks.add(new Task("Workout", "Take a walk today"));
+//        tasks.add(new Task("Retro Homework", "Do Retro for Thurs lab"));
 
         // Render Task Items to the screen, in RecyclerView
         // starter code at: // https://developer.android.com/guide/topics/ui/layout/recyclerview
@@ -49,6 +54,15 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
         // Specify an Adapter
         recyclerView.setAdapter(new TaskAdapter(tasks, this));
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+
 
         // Button that takes user to Add Task Page
         Button goToAddTaskButton = findViewById(R.id.goAddTaskButton);
@@ -85,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
         // add extra info about that task
         clickedOnTask.putExtra("task", task.getTitle());
-        clickedOnTask.putExtra("taskBody", task.getBody());  // <---- Not yet space on details page for this
+        clickedOnTask.putExtra("taskBody", task.getBody());
 
         // start the activity
         MainActivity.this.startActivity(clickedOnTask);

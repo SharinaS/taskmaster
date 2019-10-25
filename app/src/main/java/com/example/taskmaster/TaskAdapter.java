@@ -70,7 +70,7 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
     @Override
     public int getItemCount() {
-        return 3;
+        return this.tasks.size();
     }
 
     // Allow adapter to communicate with any activity that it's a part of that implements this interface
