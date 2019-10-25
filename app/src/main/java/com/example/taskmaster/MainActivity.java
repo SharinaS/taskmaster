@@ -9,6 +9,7 @@ import androidx.room.Room;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,17 +24,23 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
     private RecyclerView.Adapter taskAdapter;
 
+    private static final String TAG = "MainActivity"; // this helps filter logs
+
     @Override
     protected void onResume() {
         super.onResume();
+
         // grab username from sharedprefs and use it to update the label that displays username
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String username = prefs.getString("username", "user");
+
+        Log.w(TAG, username); // logging of username string
+
         TextView nameTextView = findViewById(R.id.helloTextView);
         nameTextView.setText("Hello " + username + "!");
 
-        // Database Info with database name of taskmaster
-        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "taskmaster")
+        // Database Info with database name of taskmaster from strings.xml
+        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, getString(R.string.database_name))
                 .allowMainThreadQueries().build();
 
         // List of Tasks for Recycler View
@@ -42,10 +49,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         // get everything from the database (addAll is a built in method) then add all that stuff to the list.
         // We're returning the list from getall, which is being added to tasks.
         this.tasks.addAll(db.taskDao().getall());
-
-//        tasks.add(new Task("Lab Homework", "Finish Thurs Lab"));
-//        tasks.add(new Task("Workout", "Take a walk today"));
-//        tasks.add(new Task("Retro Homework", "Do Retro for Thurs lab"));
 
         // Render Task Items to the screen, in RecyclerView
         // starter code at: // https://developer.android.com/guide/topics/ui/layout/recyclerview
@@ -62,9 +65,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-        // Button that takes user to Add Task Page
+        // ==  Button that takes user to Add Task Page
         Button goToAddTaskButton = findViewById(R.id.goAddTaskButton);
         goToAddTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
