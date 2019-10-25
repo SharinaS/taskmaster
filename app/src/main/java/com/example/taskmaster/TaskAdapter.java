@@ -12,9 +12,13 @@ import java.util.List;
 
 class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
+    // list of tasks from the task class
     public List<Task> tasks;
+
+    // listener
     private OnTaskItemInteractionListener listener;
 
+    // Adapter constructor
     public TaskAdapter(List<Task> tasks, OnTaskItemInteractionListener listener) {
         this.tasks = tasks;
         this.listener = listener;
@@ -26,6 +30,7 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
         TextView itemTitleView;
         TextView itemBodyView;
 
+        // ViewHolder constructor
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
             this.itemTitleView = itemView.findViewById(R.id.title);
