@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     @Override
     protected void onResume() {
         super.onResume();
-        // grab username from sharedprefs and use it to update the label
+        // grab username from sharedprefs and use it to update the label that displays username
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String username = prefs.getString("username", "user");
         TextView nameTextView = findViewById(R.id.helloTextView);
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Hardcoded Tasks for Recycler View
+        // List of Tasks for Recycler View
         this.tasks = new LinkedList<>();
 
         tasks.add(new Task("Lab Homework", "Finish Thurs Lab"));
@@ -46,9 +46,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         // starter code at: // https://developer.android.com/guide/topics/ui/layout/recyclerview
         RecyclerView recyclerView = findViewById(R.id.tasks);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         // Specify an Adapter
         recyclerView.setAdapter(new TaskAdapter(tasks, this));
-
 
         // Button that takes user to Add Task Page
         Button goToAddTaskButton = findViewById(R.id.goAddTaskButton);
@@ -69,75 +69,25 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                 MainActivity.this.startActivity(goToAllTasksView);
             }
         });
-
-//        // Task Button called Go Food Shopping should send user to detail view and show new Task Title
-//        final Button foodShoppingTaskButton = findViewById(R.id.taskShopping);
-//        foodShoppingTaskButton.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View event) {
-//                // go to the other activity... create the intent to start that activity
-//                Intent goTofoodShoppingTaskDetail = new Intent(MainActivity.this, TaskDetail.class);
-//
-//                // add extra info about that task
-//                goTofoodShoppingTaskDetail.putExtra("task", foodShoppingTaskButton.getText().toString());
-//
-//                // start the activity
-//                MainActivity.this.startActivity(goTofoodShoppingTaskDetail);
-//            }
-//        });
-//
-//        // Second Task Button - Homework To Do - stores extra info and sends user to Details Page
-//        final Button homeworkToDoButton = findViewById(R.id.taskDoHomework);
-//        homeworkToDoButton.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View event) {
-//                // go to the other activity... create the intent to start that activity
-//                Intent homeworkTask = new Intent(MainActivity.this, TaskDetail.class);
-//
-//                // add extra info about that task
-//                homeworkTask.putExtra("task", homeworkToDoButton.getText().toString());
-//
-//                // start the activity
-//                MainActivity.this.startActivity(homeworkTask);
-//            }
-//        });
-//
-//        // Third task button - Workout Goals - stores extra info and sends user to Details Page
-//        final Button workoutGoalsButton = findViewById(R.id.taskWorkout);
-//        workoutGoalsButton.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View event) {
-//                // go to the other activity... create the intent to start that activity
-//                Intent workoutGoalsTask = new Intent(MainActivity.this, TaskDetail.class);
-//
-//                // add extra info about that task
-//                workoutGoalsTask.putExtra("task", workoutGoalsButton.getText().toString());
-//
-//                // start the activity
-//                MainActivity.this.startActivity(workoutGoalsTask);
-//            }
-//        });
     }
 
-    // Starts activity over in Settings
+    // === Starts activity over in Settings ===
     public void goToSettingsActivity(View v) {
         Intent i = new Intent(this, Settings.class);
         this.startActivity(i);
     }
 
+    // === Takes user to detail page when a task is clicked on ===
     @Override
     public void taskItemClickedOn(Task task) {
         // go to the other activity... create the intent to start that activity
-        Intent workoutGoalsTask = new Intent(MainActivity.this, TaskDetail.class);
+        Intent clickedOnTask = new Intent(MainActivity.this, TaskDetail.class);
 
         // add extra info about that task
-        workoutGoalsTask.putExtra("task", task.getTitle());
+        clickedOnTask.putExtra("task", task.getTitle());
+        clickedOnTask.putExtra("taskBody", task.getBody());  // <---- Not yet space on details page for this
 
         // start the activity
-        MainActivity.this.startActivity(workoutGoalsTask);
-
+        MainActivity.this.startActivity(clickedOnTask);
     }
 }
