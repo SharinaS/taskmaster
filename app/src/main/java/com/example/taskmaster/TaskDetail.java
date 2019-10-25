@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 public class TaskDetail extends AppCompatActivity {
 
     @Override
@@ -13,12 +15,17 @@ public class TaskDetail extends AppCompatActivity {
         setContentView(R.layout.activity_task_detail);
 
         // == Accesses Extra Data From MainActivity Buttons ==
+
         // get the data added to the intent & use it to display this activity
         String task = getIntent().getStringExtra("task");
-
         // grab the label from the page
-        TextView view = findViewById(R.id.detailTaskTitle);
+        TextView titleView = findViewById(R.id.detailTaskTitle);
         // set its text to be the item name
-        view.setText(task);
+        titleView.setText(task);
+
+        // Gets the body of the task to render it
+        String taskBody = getIntent().getStringExtra("taskBody");
+        TextView textView = findViewById(R.id.task_detail_desc);
+        textView.setText(taskBody);
     }
 }

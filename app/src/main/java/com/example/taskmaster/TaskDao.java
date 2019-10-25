@@ -12,7 +12,6 @@ import java.util.List;
 public interface TaskDao {
 
     // order items in database in descending order
-
     // return a list of tasks
     @Query("SELECT * FROM task ORDER BY id DESC")
     List<Task> getall();
