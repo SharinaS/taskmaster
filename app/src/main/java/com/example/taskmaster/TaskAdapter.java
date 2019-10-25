@@ -38,6 +38,7 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
         }
     }
 
+    // == 3 Methods that help the RecyclerView: ==
     // RecyclerView requires a brand new row to be created from scratch, to hold data
     @NonNull
     @Override
@@ -57,7 +58,6 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
         return holder;
     }
 
-
     // RecyclerView has a row that needs to be updated for a particular location/index
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
@@ -73,7 +73,7 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
         return this.tasks.size();
     }
 
-    // Allow adapter to communicate with any activity that it's a part of that implements this interface
+    // == Allow adapter to communicate with any activity that it's a part of that implements this interface
     public static interface OnTaskItemInteractionListener {
         public void taskItemClickedOn(Task task);
     }
