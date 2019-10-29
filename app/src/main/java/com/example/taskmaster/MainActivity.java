@@ -8,6 +8,7 @@ import androidx.room.Room;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,9 +18,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,15 +39,33 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     private List<Task> tasks;
     public AppDatabase db;
 
+
+
     private RecyclerView.Adapter taskAdapter;
 
     private static final String TAG = "MainActivity"; // this helps filter logs
 
-    // for helping with accessing the great internet:
+    //=============== for helping with accessing the great internet: ============
     public void putDataOnPage(String data) {
         TextView internetTextView = findViewById(R.id.internetStuff);
-        internetTextView.setText(data);
+        internetTextView.setText(data); // sets the data into the textview
+
+        // Use gson to parse json
+        Gson gson = new Gson(); // remember to add dependency
+
+        Task[] taskFromInternetArr = gson.fromJson(data, Task[].class);
+        Log.i(TAG, Arrays.toString(taskFromInternetArr));
+
+        // update list with new data
+        this.tasks = new LinkedList<>();
+        this.tasks.addAll(Arrays.asList(taskFromInternetArr));
+        Log.i(TAG, tasks.toString());
+
+        // notify adapter that data set change
+
+
     }
+    // ====================================================
 
     @Override
     protected void onResume() {
@@ -58,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         TextView nameTextView = findViewById(R.id.helloTextView);
         nameTextView.setText("Hello " + username + "!");
 
+        // ====== Database Code ===========
         // Database Info with database name of taskmaster from strings.xml
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, getString(R.string.database_name))
                 .allowMainThreadQueries().build();
@@ -69,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         // We're returning the list from getall, which is being added to tasks.
         this.tasks.addAll(db.taskDao().getall());
 
+        // ====== Recycler and Adapter Code =========
         // Render Task Items to the screen, in RecyclerView
         // starter code at: // https://developer.android.com/guide/topics/ui/layout/recyclerview
         RecyclerView recyclerView = findViewById(R.id.tasks);
@@ -98,8 +122,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         client.newCall(request).enqueue(new LogDataWhenItComesBackCallback(this));
 
         // =================================================
-        
-        // ==  Button that takes user to Add Task Page
+
+        //  Button that takes user to Add Task Page
         Button goToAddTaskButton = findViewById(R.id.goAddTaskButton);
         goToAddTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     }
 }
 
+// ===== Class to support accessing data from Internet ========
 class LogDataWhenItComesBackCallback implements Callback {
 
     MainActivity actualMainActivityInstance;

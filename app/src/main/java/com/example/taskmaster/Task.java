@@ -68,4 +68,14 @@ public class Task {
     public long getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", taskState=" + taskState +
+                ", title='" + title + '\'' +
+                ", body='" + body + '\'' +
+                '}';
+    }
 }

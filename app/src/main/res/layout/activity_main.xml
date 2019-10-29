@@ -78,8 +78,8 @@
 
     <TextView
         android:id="@+id/internetStuff"
-        android:layout_width="321dp"
-        android:layout_height="25dp"
+        android:layout_width="349dp"
+        android:layout_height="111dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
