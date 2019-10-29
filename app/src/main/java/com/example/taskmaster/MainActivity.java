@@ -9,15 +9,28 @@ import androidx.room.Room;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTaskItemInteractionListener {
+
 
     private List<Task> tasks;
     public AppDatabase db;
@@ -25,6 +38,12 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     private RecyclerView.Adapter taskAdapter;
 
     private static final String TAG = "MainActivity"; // this helps filter logs
+
+    // for helping with accessing the great internet:
+    public void putDataOnPage(String data) {
+        TextView internetTextView = findViewById(R.id.internetStuff);
+        internetTextView.setText(data);
+    }
 
     @Override
     protected void onResume() {
@@ -65,6 +84,21 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        // ============ Data from the Internet =============
+        OkHttpClient client = new OkHttpClient();
+
+        // == Request Builder
+        Request request = new Request.Builder()
+                .url("http://taskmaster-api.herokuapp.com/tasks")
+                .build();
+
+
+        // callback function used here
+        client.newCall(request).enqueue(new LogDataWhenItComesBackCallback(this));
+
+        // =================================================
+        
         // ==  Button that takes user to Add Task Page
         Button goToAddTaskButton = findViewById(R.id.goAddTaskButton);
         goToAddTaskButton.setOnClickListener(new View.OnClickListener() {
@@ -104,5 +138,44 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
         // start the activity
         MainActivity.this.startActivity(clickedOnTask);
+    }
+}
+
+class LogDataWhenItComesBackCallback implements Callback {
+
+    MainActivity actualMainActivityInstance;
+
+    // == constructor for this class
+    public LogDataWhenItComesBackCallback(MainActivity actualMainActivityInstance) {
+        this.actualMainActivityInstance = actualMainActivityInstance;
+    }
+
+    private static final String TAG = "example.Callback";
+
+    // This is called by OKHttp if request fails
+    @Override
+    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+        Log.e(TAG, "internet error");
+        Log.e(TAG, e.getMessage());
+
+    }
+
+    // OKHttp calls this is the request works
+    @Override
+    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+        String responseBody = response.body().string();       // <--------------------------------- what is response.body?
+        Log.i(TAG, responseBody);
+
+        // defines a class that extends Handler
+        Handler handlerForMainThread = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message inputMessage) {
+                // get the data from Message object and pass to actualMainActivityInstance
+                actualMainActivityInstance.putDataOnPage((String)inputMessage.obj);
+            }
+        };
+
+        Message completeMessage = handlerForMainThread.obtainMessage(0, responseBody);
+        completeMessage.sendToTarget(); // <------------------------------------------------- What's this do?
     }
 }
