@@ -41,6 +41,11 @@ Sharina Stubbs
 * Description and title of a tapped task is displayed on the detail page.
 ![homepage screenshot](screenshots/homepage_database.jpg)
 
+### October 29: Day 5
+* When your application is opened, can make a request to the provided backend server URL to fetch Task data. Task data is desplayed in the RecyclerView.
+* Add Task form modified to post entered task data to the server.
+* Homepage refreshes Tasks shown after a task is added.
+
 
 # Resources:
 * [Android Buttons](https://developer.android.com/guide/topics/ui/controls/button.html)
@@ -53,3 +58,4 @@ Sharina Stubbs
 * [Enum Types](https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html)
 * Code Fellows Seattle-Java-401d6 class demo: [Buy Cheap Stuff](https://github.com/codefellows/seattle-java-401d6/tree/master/class-29/BuyCheapStuff)
 * [Overview: Saving Data with Room](https://developer.android.com/training/data-storage/room)
+* [OkHttp](https://square.github.io/okhttp)
