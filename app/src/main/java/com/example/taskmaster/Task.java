@@ -4,6 +4,8 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import com.amazonaws.amplify.generated.graphql.ListTasksQuery;
+
 @Entity
 public class Task {
 
@@ -44,6 +46,13 @@ public class Task {
         this.title = title;
         this.body = body;
         this.taskState = TaskState.NEW;
+    }
+
+    // == Overloaded Task Constructor for AWS method getAllTasksCallback()
+    public Task(ListTasksQuery.Item item) {
+        this.title = item.title();
+        this.body = item.body();
+        this.taskState = StatusConverter.toStatus(item.taskState());
     }
 
     // == Setters
