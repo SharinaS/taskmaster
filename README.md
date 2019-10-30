@@ -46,6 +46,8 @@ Sharina Stubbs
 * Add Task form modified to post entered task data to the server.
 * Homepage refreshes Tasks shown after a task is added.
 
+### October 30: Day 6
+
 
 # Resources:
 * [Android Buttons](https://developer.android.com/guide/topics/ui/controls/button.html)

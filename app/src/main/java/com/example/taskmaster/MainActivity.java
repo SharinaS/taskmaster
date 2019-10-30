@@ -51,18 +51,19 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         internetTextView.setText(data); // sets the data into the textview
 
         // Use gson to parse json
-        Gson gson = new Gson(); // remember to add dependency
+        Gson gson = new Gson();
 
         Task[] taskFromInternetArr = gson.fromJson(data, Task[].class);
         Log.i(TAG, Arrays.toString(taskFromInternetArr));
 
         // update list with new data
+//        this.tasks.addAll(Arrays.asList(taskFromInternetArr));
         this.tasks = new LinkedList<>();
         this.tasks.addAll(Arrays.asList(taskFromInternetArr));
         Log.i(TAG, tasks.toString());
 
         // notify adapter that data set change
-
+//        this.taskAdapter.notifyDataSetChanged();
 
     }
     // ====================================================
@@ -99,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Specify an Adapter
+        // for use with database only:
         recyclerView.setAdapter(new TaskAdapter(tasks, this));
     }
 
@@ -191,16 +193,20 @@ class LogDataWhenItComesBackCallback implements Callback {
         String responseBody = response.body().string();       // <--------------------------------- what is response.body?
         Log.i(TAG, responseBody);
 
-        // defines a class that extends Handler
+        // defines a class that does nice things on the main/UI thread for us
+        // this code will run once sendToTarget activates.
         Handler handlerForMainThread = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message inputMessage) {
                 // get the data from Message object and pass to actualMainActivityInstance
+                // inputMessage.obj is the responseBody defined above
                 actualMainActivityInstance.putDataOnPage((String)inputMessage.obj);
             }
         };
 
+        // Get a message from the handler and send it
+        // ResponseBody will be the message.obj b/c it's the second argument to obtain message.
         Message completeMessage = handlerForMainThread.obtainMessage(0, responseBody);
-        completeMessage.sendToTarget(); // <------------------------------------------------- What's this do?
+        completeMessage.sendToTarget(); // <--- calls .handleMessage on the main thread
     }
 }
