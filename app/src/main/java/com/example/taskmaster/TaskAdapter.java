@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Arrays;
 import java.util.List;
 
 class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
@@ -36,6 +37,20 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
             this.itemTitleView = itemView.findViewById(R.id.title);
             this.itemBodyView = itemView.findViewById(R.id.body);
         }
+    }
+
+
+    // ======= Modifying methods for using API ========
+    // to add to current Recycler view
+    public void addNewTask(Task[] newTasks) {
+        this.tasks.addAll(Arrays.asList(newTasks));
+        this.notifyDataSetChanged();
+    }
+
+    // to replace current Recycler view
+    public void replaceData(Task[] newTasks) {
+        this.tasks = Arrays.asList(newTasks);
+        this.notifyDataSetChanged();
     }
 
     // == 3 Methods that help the RecyclerView: ==
