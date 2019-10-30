@@ -193,6 +193,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     }
 
     // ============= Add Task Stuff to AWS Amplify Database with a Mutation ==============
+    // Starting code from https://aws-amplify.github.io/docs/android/start
     public void runAddTaskMutation() {
         CreateTaskInput createTaskInput = CreateTaskInput.builder()
                 .title("Shopping")
@@ -251,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     };
 }
 
-// ===== Class to support accessing data from Internet ========
+// ===== Class to support accessing data from Internet via OkHTTP ========
 class LogDataWhenItComesBackCallback implements Callback {
 
     MainActivity actualMainActivityInstance;

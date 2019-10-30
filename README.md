@@ -25,7 +25,7 @@ Sharina Stubbs
 * The homepage contains a button to visit the Settings page. Once the user has entered their username, it displays “{username}’s tasks” above the three task buttons.
 ![detail screenshot](screenshots/task-detail-page.jpg)
 
-### October 24: Day 3
+## October 24: Day 3
 * Created a Task class. Each task has a title, body and a state.
 * Created an enum, which allows the Task state to be new, assigned, in progress or complete. 
 * Refactored home page of app to display a RecyclerView to display Task data using a styled fragment.
@@ -34,20 +34,24 @@ Sharina Stubbs
 * User is able to touch a task in the RecyclerView, and is directed over to a detail page, where the title is rendered correctly (for that task) on the top of that page.
 ![homepage screenshot](screenshots/homepage-updated.jpg)
 
-### October 25: Day 4
+## October 25: Day 4
 * Modified Add Task form to save the data entered in as a Task in the local SQLite database.
 * Fleshed out enum (which works with Task status) to integrate with database.
 * Refactored homepage RecyclerView to display all Task entities in database.
 * Description and title of a tapped task is displayed on the detail page.
 ![homepage screenshot](screenshots/homepage_database.jpg)
 
-### October 29: Day 5
-* When your application is opened, can make a request to the provided backend server URL to fetch Task data. Task data is desplayed in the RecyclerView.
+## October 29: Day 5
+* When application is opened, it can make a request to a backend server URL to fetch Task data using OkHTTP. * Task data is displayed in the RecyclerView.
 * Add Task form modified to post entered task data to the server.
 * Homepage refreshes Tasks shown after a task is added.
 
-### October 30: Day 6
-
+## October 30: Day 6
+* Using the amplify add api command, created a Task resource that replicates existing Task schema. 
+* Updated all references to the Task data to instead use AWS Amplify to access data in DynamoDB instead of in Room.
+* Modified Add Task form to save the data entered in as a Task to DynamoDB.
+* Refactored homepage’s RecyclerView to display all Task entities in DynamoDB.
+* Ensured that current Espresso tests are still passing.
 
 # Resources:
 * [Android Buttons](https://developer.android.com/guide/topics/ui/controls/button.html)
@@ -61,3 +65,4 @@ Sharina Stubbs
 * Code Fellows Seattle-Java-401d6 class demo: [Buy Cheap Stuff](https://github.com/codefellows/seattle-java-401d6/tree/master/class-29/BuyCheapStuff)
 * [Overview: Saving Data with Room](https://developer.android.com/training/data-storage/room)
 * [OkHttp](https://square.github.io/okhttp)
+* [Android Amplify Framework - Getting Started](https://aws-amplify.github.io/docs/android/start)
