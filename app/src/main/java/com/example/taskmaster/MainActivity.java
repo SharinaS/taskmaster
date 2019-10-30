@@ -18,6 +18,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.amazonaws.amplify.generated.graphql.CreateTaskMutation;
+import com.amazonaws.mobile.config.AWSConfiguration;
+import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
+import com.apollographql.apollo.GraphQLCall;
+import com.apollographql.apollo.exception.ApolloException;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -27,11 +32,14 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import type.CreateTaskInput;
 
 public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTaskItemInteractionListener {
 
@@ -40,9 +48,16 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     public AppDatabase db;
 
 
+    // Class variable for recycler view
+    RecyclerView recyclerView;
 
+    // Class variable for recycler view adapter
     private RecyclerView.Adapter taskAdapter;
 
+    // Class variable for awsAppSyncClient
+    AWSAppSyncClient awsAppSyncClient;
+
+    // main activity tag for logging
     private static final String TAG = "MainActivity"; // this helps filter logs
 
     //=============== for helping with accessing the great internet: ============
@@ -96,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         // ====== Recycler and Adapter Code =========
         // Render Task Items to the screen, in RecyclerView
         // starter code at: // https://developer.android.com/guide/topics/ui/layout/recyclerview
-        RecyclerView recyclerView = findViewById(R.id.tasks);
+        recyclerView = findViewById(R.id.tasks);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Specify an Adapter
@@ -110,6 +125,13 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // ============ Connect to AWS =====================
+        awsAppSyncClient = AWSAppSyncClient.builder()
+                .context(getApplicationContext())
+                .awsConfiguration(new AWSConfiguration(getApplicationContext()))
+                .build();
+
+        runAddTaskMutation();
 
         // ============ Data from the Internet =============
         OkHttpClient client = new OkHttpClient();
@@ -165,6 +187,29 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         // start the activity
         MainActivity.this.startActivity(clickedOnTask);
     }
+
+    // ============= Add Task Stuff to AWS Amplify Database with a Mutation ==============
+    public void runAddTaskMutation() {
+        CreateTaskInput createTaskInput = CreateTaskInput.builder()
+                .title("Shopping")
+                .body("Check shopping list for food items")
+                .taskState(1)
+                .build();
+        awsAppSyncClient.mutate(CreateTaskMutation.builder().input(createTaskInput).build())
+                .enqueue(addTaskCallback);
+    }
+
+    public GraphQLCall.Callback<CreateTaskMutation.Data> addTaskCallback = new GraphQLCall.Callback<CreateTaskMutation.Data>(){
+        @Override
+        public void onResponse(@Nonnull final com.apollographql.apollo.api.Response<CreateTaskMutation.Data> response) {
+            Log.i("graphql insert", "added a task");
+        }
+
+        @Override
+        public void onFailure(@Nonnull ApolloException e) {
+            Log.e("graphql insert", e.getMessage());
+        }
+    };
 }
 
 // ===== Class to support accessing data from Internet ========
