@@ -19,8 +19,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.amazonaws.amplify.generated.graphql.CreateTaskMutation;
+import com.amazonaws.amplify.generated.graphql.ListTasksQuery;
 import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
+import com.amazonaws.mobileconnectors.appsync.fetcher.AppSyncResponseFetchers;
 import com.apollographql.apollo.GraphQLCall;
 import com.apollographql.apollo.exception.ApolloException;
 import com.google.gson.Gson;
@@ -131,7 +133,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                 .awsConfiguration(new AWSConfiguration(getApplicationContext()))
                 .build();
 
+        // run graphql queries
         runAddTaskMutation();
+        queryAllTasks();
 
         // ============ Data from the Internet =============
         OkHttpClient client = new OkHttpClient();
@@ -208,6 +212,25 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         @Override
         public void onFailure(@Nonnull ApolloException e) {
             Log.e("graphql insert", e.getMessage());
+        }
+    };
+
+    // ======== Query the AWS DynamoDB ==============
+    public void queryAllTasks() {
+        awsAppSyncClient.query(ListTasksQuery.builder().build())
+                .responseFetcher(AppSyncResponseFetchers.CACHE_AND_NETWORK)
+                .enqueue(getAllTasksCallback);
+    }
+
+    public GraphQLCall.Callback<ListTasksQuery.Data> getAllTasksCallback = new GraphQLCall.Callback<ListTasksQuery.Data>() {
+        @Override
+        public void onResponse(@Nonnull com.apollographql.apollo.api.Response<ListTasksQuery.Data> response) {
+            Log.i("graphqlgetall", response.data().listTasks().items().toString()); // <---- gives us a list of task items. Will have to be converted later
+        }
+
+        @Override
+        public void onFailure(@Nonnull ApolloException e) {
+            Log.e("graphqlgetall", e.getMessage());
         }
     };
 }
