@@ -224,8 +224,24 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
     public GraphQLCall.Callback<ListTasksQuery.Data> getAllTasksCallback = new GraphQLCall.Callback<ListTasksQuery.Data>() {
         @Override
-        public void onResponse(@Nonnull com.apollographql.apollo.api.Response<ListTasksQuery.Data> response) {
+        public void onResponse(@Nonnull final com.apollographql.apollo.api.Response<ListTasksQuery.Data> response) {
             Log.i("graphqlgetall", response.data().listTasks().items().toString()); // <---- gives us a list of task items. Will have to be converted later
+
+            Handler handlerForMainThread = new Handler(Looper.getMainLooper()){ // <------- not being used yet
+                @Override
+                public void handleMessage(Message inputMessage) {
+                    Log.i("qraphqlgetall", "made it to the callback");
+                    List<ListTasksQuery.Item> items = response.data().listTasks().items();
+                    tasks.clear();
+                    for(ListTasksQuery.Item item : items) {
+                        tasks.add(new Task(item)); // <-- new constructor written for this
+                    }
+                    // tell recyclerView that stuff has changed
+                    recyclerView.getAdapter().notifyDataSetChanged();
+                }
+            };
+            // last step for updating the recyclerView given presence of handler to deal with main thread.
+            handlerForMainThread.obtainMessage().sendToTarget();
         }
 
         @Override
