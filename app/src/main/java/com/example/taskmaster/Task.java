@@ -17,6 +17,7 @@ public class Task {
     @TypeConverters(StatusConverter.class)
     public TaskState taskState;
 
+
     public enum TaskState {
         NEW(0),
         ASSIGNED(1),
@@ -76,6 +77,10 @@ public class Task {
 
     public long getId() {
         return id;
+    }
+
+    public TaskState getTaskState() {
+        return taskState;
     }
 
     @Override
