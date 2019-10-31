@@ -11,9 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.amazonaws.amplify.generated.graphql.CreateTaskMutation;
+import com.amazonaws.amplify.generated.graphql.CreateTeamMutation;
 import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
 import com.apollographql.apollo.GraphQLCall;
+import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 
 import java.util.List;
@@ -21,6 +23,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import type.CreateTaskInput;
+import type.CreateTeamInput;
 
 public class AddTask extends AppCompatActivity {
 
@@ -36,20 +39,34 @@ public class AddTask extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
 
-        // ============ Connect to AWS =====================
+
+
+        // Connect to AWS
         awsAppSyncClient = AWSAppSyncClient.builder()
                 .context(getApplicationContext())
                 .awsConfiguration(new AWSConfiguration(getApplicationContext()))
                 .build();
 
+        //=================== Create a Mutation x 3 Runs ======================= // <-------- NOT WORKING
+        CreateTeamInput input = CreateTeamInput.builder()
+                .name("One")
+                .build();
+        CreateTeamMutation createTeamMutation = CreateTeamMutation.builder().input(input).build();
+        awsAppSyncClient.mutate(createTeamMutation).enqueue(new GraphQLCall.Callback<CreateTeamMutation.Data>() {
+            @Override
+            public void onResponse(@Nonnull Response<CreateTeamMutation.Data> response) {
+                Log.i("sharina", "successful mutation");
+            }
 
-        // ========== Room (Local) Database ================
-        // database info, and database that you are connecting to - taskmaster (found in strings.xml)
-        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, getString(R.string.database_name))
-                .allowMainThreadQueries().build();
+            @Override
+            public void onFailure(@Nonnull ApolloException e) {
+                Log.i("sharina", "failure for mutation");
+            }
+        });
+        //////////////////////////////////////
 
         Button buttonAddTask = findViewById((R.id.addTaskButton));
-        // add event listener to the button
+
         buttonAddTask.setOnClickListener(new View.OnClickListener() {
             // make text Submitted! appear with button click
             @Override
@@ -62,14 +79,15 @@ public class AddTask extends AppCompatActivity {
                 String stringBody = taskBody.getText().toString();
 
                 Task newTask = new Task(stringTitle, stringBody);
-                // db.taskDao().saveNewTask(newTask); // <--- saves to local database
 
+                // add task to dynamoDB
                 runAddTaskMutation(newTask);
 
                 // Automatically let person return to prior page they were on once activity complete.
                 AddTask.this.finish();
             }
         });
+
     }
 
     // ============= Add Task Stuff to AWS Amplify Database with a Mutation ==============

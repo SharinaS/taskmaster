@@ -132,7 +132,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     public void queryAllTasks() {
         Log.i("graphqlgetall", "made it into queryAllTasks method");
         awsAppSyncClient.query(ListTasksQuery.builder().build())
-                .responseFetcher(AppSyncResponseFetchers.CACHE_AND_NETWORK)
+                //.responseFetcher(AppSyncResponseFetchers.CACHE_AND_NETWORK)
+                .responseFetcher(AppSyncResponseFetchers.NETWORK_ONLY)
                 .enqueue(getAllTasksCallback);
     }
 
