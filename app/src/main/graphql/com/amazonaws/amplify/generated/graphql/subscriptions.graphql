@@ -5,6 +5,13 @@ subscription OnCreateTask {
     title
     body
     taskState
+    team {
+      id
+      name
+      listOfTasks {
+        nextToken
+      }
+    }
   }
 }
 subscription OnUpdateTask {
@@ -13,6 +20,13 @@ subscription OnUpdateTask {
     title
     body
     taskState
+    team {
+      id
+      name
+      listOfTasks {
+        nextToken
+      }
+    }
   }
 }
 subscription OnDeleteTask {
@@ -21,5 +35,57 @@ subscription OnDeleteTask {
     title
     body
     taskState
+    team {
+      id
+      name
+      listOfTasks {
+        nextToken
+      }
+    }
+  }
+}
+subscription OnCreateTeam {
+  onCreateTeam {
+    id
+    name
+    listOfTasks {
+      items {
+        id
+        title
+        body
+        taskState
+      }
+      nextToken
+    }
+  }
+}
+subscription OnUpdateTeam {
+  onUpdateTeam {
+    id
+    name
+    listOfTasks {
+      items {
+        id
+        title
+        body
+        taskState
+      }
+      nextToken
+    }
+  }
+}
+subscription OnDeleteTeam {
+  onDeleteTeam {
+    id
+    name
+    listOfTasks {
+      items {
+        id
+        title
+        body
+        taskState
+      }
+      nextToken
+    }
   }
 }
