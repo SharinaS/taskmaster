@@ -14,7 +14,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.amazonaws.amplify.generated.graphql.GetTeamQuery;
 import com.amazonaws.amplify.generated.graphql.ListTasksQuery;
+import com.amazonaws.amplify.generated.graphql.ListTeamsQuery;
 import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
 import com.amazonaws.mobileconnectors.appsync.fetcher.AppSyncResponseFetchers;
@@ -49,10 +52,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         TextView nameTextView = findViewById(R.id.helloTextView);
         nameTextView.setText("Hello " + username + "!");
 
-
-
         // run graphql queries
-        queryAllTasks();
+        //queryTeamTasks();  // <----------------- COME BACK HERE!
     }
 
 
@@ -119,43 +120,46 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
 
     // ======== Query the AWS DynamoDB ==============
-    public void queryAllTasks() {
-        Log.i("graphqlgetall", "made it into queryAllTasks method");
-
-        awsAppSyncClient.query(ListTasksQuery.builder().build())
-                .responseFetcher(AppSyncResponseFetchers.NETWORK_ONLY)
-                .enqueue(getAllTasksCallback);
-    }
-
-    public GraphQLCall.Callback<ListTasksQuery.Data> getAllTasksCallback = new GraphQLCall.Callback<ListTasksQuery.Data>() {
-        @Override
-        public void onResponse(@Nonnull final com.apollographql.apollo.api.Response<ListTasksQuery.Data> response) {
-            // log will show a list of task items
-            Log.i("graphqlgetall", response.data().listTasks().items().toString()); // <-- shows what was put into db
-
-            Handler handlerForMainThread = new Handler(Looper.getMainLooper()){
-
-                @Override
-                public void handleMessage(Message inputMessage) {
-                    Log.i("qraphqlgetall", "made it to the callback");
-                    List<ListTasksQuery.Item> items = response.data().listTasks().items();
-                    tasks.clear();
-
-                    for(ListTasksQuery.Item item : items) {
-                        tasks.add(new Task(item)); // <-- new constructor written for this to make items into Tasks
-                    }
-                    // tell recyclerView that stuff has changed
-                    recyclerView.getAdapter().notifyDataSetChanged();
-                }
-            };
-            // last step for updating the recyclerView given presence of handler to deal with main thread.
-            handlerForMainThread.obtainMessage().sendToTarget();
-        }
-
-        @Override
-        public void onFailure(@Nonnull ApolloException e) {
-            Log.e("graphqlgetall", e.getMessage());
-        }
-    };
+//    public void queryTeamTasks() {
+//        Log.i("graphqlgetall", "made it into queryTeamTasks method");
+//
+////        awsAppSyncClient.query(ListTasksQuery.builder().build())
+//        awsAppSyncClient.query(ListTeamsQuery.builder().build())
+//                .responseFetcher(AppSyncResponseFetchers.NETWORK_ONLY)
+//                .enqueue(getTeamTasksCallback);
+//    }
+//
+//    public GraphQLCall.Callback<GetTeamQuery.Data> getTeamTasksCallback = new GraphQLCall.Callback<GetTeamsQuery.Data>() {
+//
+//        @Override
+//        public void onResponse(@Nonnull final com.apollographql.apollo.api.Response<ListTeamsQuery.Data> response) {
+//
+//            List<GetTeamQuery.Item> tasks = response.data().listTeams().items();  // <------------------ RETURN HERE!!!!!!!!
+//
+////            Handler handlerForMainThread = new Handler(Looper.getMainLooper()){
+////
+////                @Override
+////                public void handleMessage(Message inputMessage) {
+////                    Log.i("qraphqlgetall", "made it to the callback");
+////
+////                    List<ListTasksQuery.Item> items = response.data().listTasks().items();
+////                    tasks.clear();
+////
+////                    for(ListTasksQuery.Item item : items) {
+////                        tasks.add(new Task(item)); // <-- new constructor written for this to make items into Tasks
+////                    }
+////                    // tell recyclerView that stuff has changed
+////                    recyclerView.getAdapter().notifyDataSetChanged();
+////                }
+////            };
+////            // last step for updating the recyclerView given presence of handler to deal with main thread.
+////            handlerForMainThread.obtainMessage().sendToTarget();
+//        }
+//
+//        @Override
+//        public void onFailure(@Nonnull ApolloException e) {
+//            Log.e("graphqlgetall", e.getMessage());
+//        }
+//    };
 }
 
