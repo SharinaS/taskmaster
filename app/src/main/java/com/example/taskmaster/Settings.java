@@ -21,7 +21,6 @@ public class Settings extends AppCompatActivity {
         System.out.println("button pressed");
 
         // === save what the user types into Shared Preferences
-        // grab what the user typed in
         EditText nameEditText = findViewById(R.id.enterUsername);
         String name = nameEditText.getText().toString();
 

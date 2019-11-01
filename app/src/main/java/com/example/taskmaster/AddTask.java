@@ -47,26 +47,26 @@ public class AddTask extends AppCompatActivity {
                 .awsConfiguration(new AWSConfiguration(getApplicationContext()))
                 .build();
 
-        //=================== Create a Mutation x 3 Runs ======================= // <-------- NOT WORKING
-        CreateTeamInput input = CreateTeamInput.builder()
-                .name("One")
-                .build();
-        CreateTeamMutation createTeamMutation = CreateTeamMutation.builder().input(input).build();
-        awsAppSyncClient.mutate(createTeamMutation).enqueue(new GraphQLCall.Callback<CreateTeamMutation.Data>() {
-            @Override
-            public void onResponse(@Nonnull Response<CreateTeamMutation.Data> response) {
-                Log.i("sharina", "successful mutation");
-            }
+        //=================== Create a Mutation - Run app and go to AddTask View =======================
+//        CreateTeamInput input = CreateTeamInput.builder()
+//                .name("TeamThree")
+//                .build();
+//        CreateTeamMutation createTeamMutation = CreateTeamMutation.builder().input(input).build();
+//        awsAppSyncClient.mutate(createTeamMutation).enqueue(new GraphQLCall.Callback<CreateTeamMutation.Data>() {
+//            @Override
+//            public void onResponse(@Nonnull Response<CreateTeamMutation.Data> response) {
+//                Log.i("sharina", "successful mutation");
+//            }
+//
+//            @Override
+//            public void onFailure(@Nonnull ApolloException e) {
+//                Log.i("sharina", "failure for mutation");
+//            }
+//        });
+        //===========================================
 
-            @Override
-            public void onFailure(@Nonnull ApolloException e) {
-                Log.i("sharina", "failure for mutation");
-            }
-        });
-        //////////////////////////////////////
-
+        // Add Task Button with Listener
         Button buttonAddTask = findViewById((R.id.addTaskButton));
-
         buttonAddTask.setOnClickListener(new View.OnClickListener() {
             // make text Submitted! appear with button click
             @Override
@@ -114,3 +114,5 @@ public class AddTask extends AppCompatActivity {
         }
     };
 }
+
+
