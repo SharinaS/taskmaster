@@ -8,7 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Arrays;
 import java.util.List;
 
 class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
