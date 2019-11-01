@@ -40,19 +40,6 @@ class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
     }
 
 
-    // ======= Modifying methods for using API ========
-    // to add to current Recycler view
-    public void addNewTask(Task[] newTasks) {
-        this.tasks.addAll(Arrays.asList(newTasks));
-        this.notifyDataSetChanged();
-    }
-
-    // to replace current Recycler view
-    public void replaceData(Task[] newTasks) {
-        this.tasks = Arrays.asList(newTasks);
-        this.notifyDataSetChanged();
-    }
-
     // == 3 Methods that help the RecyclerView: ==
     // RecyclerView requires a brand new row to be created from scratch, to hold data
     @NonNull

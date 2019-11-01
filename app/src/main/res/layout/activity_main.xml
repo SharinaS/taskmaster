@@ -40,7 +40,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/goToSettings"
         app:layout_constraintStart_toEndOf="@+id/goAddTaskButton"
-        app:layout_constraintTop_toBottomOf="@+id/internetStuff" />
+        app:layout_constraintTop_toBottomOf="@+id/tasks" />
 
     <Button
         android:id="@+id/goToSettings"
@@ -67,7 +67,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tasks"
         android:layout_width="366dp"
-        android:layout_height="wrap_content"
+        android:layout_height="400dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
@@ -75,14 +75,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/helloTextView" />
-
-    <TextView
-        android:id="@+id/internetStuff"
-        android:layout_width="349dp"
-        android:layout_height="111dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tasks" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
