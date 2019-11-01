@@ -5,19 +5,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.amazonaws.amplify.generated.graphql.CreateTaskMutation;
 import com.amazonaws.amplify.generated.graphql.CreateTeamMutation;
+import com.amazonaws.amplify.generated.graphql.ListTeamsQuery;
 import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
+import com.amazonaws.mobileconnectors.appsync.fetcher.AppSyncResponseFetchers;
 import com.apollographql.apollo.GraphQLCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -25,14 +34,15 @@ import javax.annotation.Nonnull;
 import type.CreateTaskInput;
 import type.CreateTeamInput;
 
-public class AddTask extends AppCompatActivity {
+public class AddTask extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     public AppDatabase db;
-    private List<Task> tasks;
-    private RecyclerView.Adapter newTaskAdapter;
 
     // Instance variable for awsAppSyncClient
     AWSAppSyncClient awsAppSyncClient;
+
+    final List<ListTeamsQuery.Item> teams = new LinkedList<>();
+    public String teamName = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +75,47 @@ public class AddTask extends AppCompatActivity {
 //        });
         //===========================================
 
-        // Add Task Button with Listener
+        // Grab all team data from the cloud and update spinner with the team names
+        ListTeamsQuery query = ListTeamsQuery.builder().build();
+        awsAppSyncClient.query(query).enqueue(new GraphQLCall.Callback<ListTeamsQuery.Data>() {
+            @Override
+            public void onResponse(@Nonnull final Response<ListTeamsQuery.Data> response) {
+                // response should have all Team data from the cloud
+                // send response to the main thread in order to put data into spinner
+                Handler h = new Handler(Looper.getMainLooper()) {
+                    @Override
+                    public void handleMessage(Message message) {
+
+                        teams.addAll(response.data().listTeams().items());
+
+                        //linkedList to hold teamnames
+                        LinkedList<String> teamNames = new LinkedList<>();
+                        for (ListTeamsQuery.Item team : teams) {
+                            teamNames.add(team.name());
+                        }
+
+                        Spinner spinner =  findViewById(R.id.spinner);
+                        ArrayAdapter<String> adapter = new ArrayAdapter(AddTask.this,
+                                android.R.layout.simple_spinner_item, teamNames);
+                        // Specify the layout to use when the list of choices appears
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner.setAdapter(adapter);
+
+                        // When something gets picked, tell AddTask
+                        spinner.setOnItemSelectedListener(AddTask.this);
+
+                    }
+                };
+                h.obtainMessage().sendToTarget();
+            }
+
+            @Override
+            public void onFailure(@Nonnull ApolloException e) {
+
+            }
+        });
+
+        // Add a Task Button with Listener
         Button buttonAddTask = findViewById((R.id.addTaskButton));
         buttonAddTask.setOnClickListener(new View.OnClickListener() {
             // make text Submitted! appear with button click
@@ -90,10 +140,11 @@ public class AddTask extends AppCompatActivity {
 
     }
 
-    // ============= Add Task Stuff to AWS Amplify Database with a Mutation ==============
+    // ============= Add Task Stuff to AWS Amplify Database (with a Mutation) ==============
     // Starting code from https://aws-amplify.github.io/docs/android/start
     public void runAddTaskMutation(Task task) {
         CreateTaskInput createTaskInput = CreateTaskInput.builder()
+                .taskTeamId(teamName)
                 .title(task.getTitle())
                 .body(task.getBody())
                 .taskState(StatusConverter.toInt(task.getTaskState())) // <-- uses the status converter to return the int of the enum
@@ -105,7 +156,7 @@ public class AddTask extends AppCompatActivity {
     public GraphQLCall.Callback<CreateTaskMutation.Data> addTaskCallback = new GraphQLCall.Callback<CreateTaskMutation.Data>(){
         @Override
         public void onResponse(@Nonnull final com.apollographql.apollo.api.Response<CreateTaskMutation.Data> response) {
-            Log.i("graphql insert", "added a task");
+            Log.i("graphqlinsert", "added a task");
         }
 
         @Override
@@ -113,6 +164,17 @@ public class AddTask extends AppCompatActivity {
             Log.e("graphql insert", e.getMessage());
         }
     };
+    // =========================
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        teamName = teams.get(position).id();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }
 
 

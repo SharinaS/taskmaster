@@ -49,11 +49,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         TextView nameTextView = findViewById(R.id.helloTextView);
         nameTextView.setText("Hello " + username + "!");
 
-        // Connect to AWS
-        awsAppSyncClient = AWSAppSyncClient.builder()
-                .context(getApplicationContext())
-                .awsConfiguration(new AWSConfiguration(getApplicationContext()))
-                .build();
+
 
         // run graphql queries
         queryAllTasks();
@@ -66,6 +62,12 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         setContentView(R.layout.activity_main);
 
         tasks = new LinkedList<>();
+
+        // Connect to AWS
+        awsAppSyncClient = AWSAppSyncClient.builder()
+                .context(getApplicationContext())
+                .awsConfiguration(new AWSConfiguration(getApplicationContext()))
+                .build();
 
         // ====== Recycler and Adapter Code =========
         // starter code at: // https://developer.android.com/guide/topics/ui/layout/recyclerview
