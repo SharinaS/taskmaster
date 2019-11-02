@@ -49,8 +49,6 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
 
-
-
         // Connect to AWS
         awsAppSyncClient = AWSAppSyncClient.builder()
                 .context(getApplicationContext())
@@ -85,7 +83,6 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
                 Handler h = new Handler(Looper.getMainLooper()) {
                     @Override
                     public void handleMessage(Message message) {
-
                         teams.addAll(response.data().listTeams().items());
 
                         //linkedList to hold teamnames
