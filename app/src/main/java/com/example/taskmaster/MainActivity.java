@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     RecyclerView recyclerView;
     // Instance variable for awsAppSyncClient
     AWSAppSyncClient awsAppSyncClient;
-    // main activity tag for logging
+
     private static final String TAG = "MainActivity"; // this helps filter logs
 
 
@@ -43,17 +43,23 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     protected void onResume() {
         super.onResume();
 
-        // grab username from sharedprefs and use it to update the label that displays username
+        //===== Shared Preferences ========
+        // grab username and teamname from sharedprefs and use it to update the page labels
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String username = prefs.getString("username", "user");
+        String teamname = prefs.getString("teamname", "team");
 
-        Log.w(TAG, username); // logging of username string
+        Log.w(TAG, username);
+        Log.w(TAG, teamname);
 
         TextView nameTextView = findViewById(R.id.helloTextView);
+        TextView teamTextView = findViewById(R.id.team);
         nameTextView.setText("Hello " + username + "!");
+        teamTextView.setText("Team Name: " + teamname);
 
+        // ==== Call Method ==============
         // run graphql queries
-        //queryTeamTasks();  // <----------------- COME BACK HERE!
+        //queryTeamTasks();  // <-------------------------------------- COME BACK HERE!
     }
 
 
