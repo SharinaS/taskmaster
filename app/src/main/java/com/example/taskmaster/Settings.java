@@ -22,7 +22,9 @@ public class Settings extends AppCompatActivity {
 
         // === save what the user types into Shared Preferences
         EditText nameEditText = findViewById(R.id.enterUsername);
+        EditText teamNameEditText = findViewById(R.id.enterTeamName);
         String name = nameEditText.getText().toString();
+        String team = teamNameEditText.getText().toString();
 
         // grab the SharedPreference in which to save the data
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -30,6 +32,7 @@ public class Settings extends AppCompatActivity {
         // save the data
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("username", name);
+        editor.putString("teamname", team);
         editor.apply();
 
         // Send user back to the Main Page
