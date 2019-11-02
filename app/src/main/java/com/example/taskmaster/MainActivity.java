@@ -22,6 +22,7 @@ import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
 import com.amazonaws.mobileconnectors.appsync.fetcher.AppSyncResponseFetchers;
 import com.apollographql.apollo.GraphQLCall;
+import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,10 +31,9 @@ import javax.annotation.Nonnull;
 public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTaskItemInteractionListener {
 
 
-    private List<Task> tasks;
-    // Instance variable for recycler view
-    RecyclerView recyclerView;
-    // Instance variable for awsAppSyncClient
+    private List<Task> tasks; // Instance variable for recycler view
+    RecyclerView recyclerView; // Instance variable for awsAppSyncClient
+    private String teamname;
     AWSAppSyncClient awsAppSyncClient;
 
     private static final String TAG = "MainActivity"; // this helps filter logs
@@ -44,14 +44,14 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         super.onResume();
 
         //===== Shared Preferences ========
-        // grab username and teamname from sharedprefs and use it to update the page labels
+        // grab username and teamname from sharedprefs
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String username = prefs.getString("username", "user");
-        String teamname = prefs.getString("teamname", "team");
+        this.teamname = prefs.getString("teamname", "team");
 
         Log.w(TAG, username);
-        Log.w(TAG, teamname);
 
+        // Add info from shared prefs to textViews on mainactivity page:
         TextView nameTextView = findViewById(R.id.helloTextView);
         TextView teamTextView = findViewById(R.id.team);
         nameTextView.setText("Hello " + username + "!");
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
         // ==== Call Method ==============
         // run graphql queries
-        //queryTeamTasks();  // <-------------------------------------- COME BACK HERE!
+        queryTeamTasks();
     }
 
 
@@ -105,27 +105,52 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     }
 
     // === Starts activity over in Settings ===
-    public void goToSettingsActivity(View v) {
+    public void goToSettingsActivity(View v) {  // <------------------------ When does this run?
         Intent i = new Intent(this, Settings.class);
         this.startActivity(i);
     }
 
-    // === Takes user to detail page when a task is clicked on ===
-    @Override
-    public void taskItemClickedOn(Task task) {
-        // go to the other activity... create the intent to start that activity
-        Intent clickedOnTask = new Intent(MainActivity.this, TaskDetail.class);
-
-        // add extra info about that task
-        clickedOnTask.putExtra("task", task.getTitle());
-        clickedOnTask.putExtra("taskBody", task.getBody());
-
-        // start the activity
-        MainActivity.this.startActivity(clickedOnTask);
-    }
 
 
     // ======== Query the AWS DynamoDB ==============
+
+    public void queryTeamTasks() {
+
+        // hardcoded id from teamOne in database
+        String id = "2b6533c1-931f-4aef-91a1-ccf65635b4ed";
+
+        // create query
+        GetTeamQuery query = GetTeamQuery.builder().id(id).build();
+        awsAppSyncClient.query(query)
+                .responseFetcher(AppSyncResponseFetchers.NETWORK_ONLY)
+                .enqueue(new GraphQLCall.Callback<GetTeamQuery.Data>() {
+            @Override
+            public void onResponse(@Nonnull Response<GetTeamQuery.Data> response) {
+
+                List<GetTeamQuery.Item> tasks = response.data().getTeam().listOfTasks().items();
+                final LinkedList<Task> appTasks = new LinkedList<>();
+
+                for(GetTeamQuery.Item task : tasks) {
+                    appTasks.add(new Task(task.title(), task.body()));  // <------ get taskstate?
+                }
+                Handler handler = new Handler(Looper.getMainLooper()) {
+                    @Override
+                    public void handleMessage (Message message) {
+                        recyclerView.setAdapter(new TaskAdapter(appTasks, MainActivity.this));
+                    }
+
+                };
+                handler.obtainMessage().sendToTarget();
+            }
+
+            @Override
+            public void onFailure(@Nonnull ApolloException e) {
+
+            }
+        });
+
+
+    }
 //    public void queryTeamTasks() {
 //        Log.i("graphqlgetall", "made it into queryTeamTasks method");
 //
@@ -167,5 +192,20 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 //            Log.e("graphqlgetall", e.getMessage());
 //        }
 //    };
+
+    // === Takes user to detail page when a task is clicked on ===
+    @Override
+    public void taskItemClickedOn(Task task) {
+        // go to the other activity... create the intent to start that activity
+        Intent clickedOnTask = new Intent(MainActivity.this, TaskDetail.class);
+
+        // add extra info about that task
+        clickedOnTask.putExtra("task", task.getTitle());
+        clickedOnTask.putExtra("taskBody", task.getBody());
+
+        // start the activity
+        MainActivity.this.startActivity(clickedOnTask);
+    }
+
 }
 

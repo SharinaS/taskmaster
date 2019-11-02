@@ -66,7 +66,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tasks"
-        android:layout_width="377dp"
+        android:layout_width="0dp"
         android:layout_height="172dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
