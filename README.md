@@ -53,6 +53,16 @@ Sharina Stubbs
 * Refactored homepage’s RecyclerView to display all Task entities in DynamoDB.
 * Ensured that current Espresso tests are still passing.
 
+## October 31 - Nov 1: Day 6 and 7
+* Created a second entity for a team, which has a name and a list of tasks. 
+* Manually created three teams by running a mutation exactly three times in the code. (user is not yet able to create his/her own teams).
+* Updated tasks to be owned by a team.
+* Modifed Add Task form to include  a Spinner for which team that task belongs to.
+* In addition to a username, the user is allowed to type in their team on the Settings page. 
+* Use that Team to display only that team’s tasks on the homepage - in process.
+
+
+
 # Resources:
 * [Android Buttons](https://developer.android.com/guide/topics/ui/controls/button.html)
 * [Android UI Events](https://developer.android.com/guide/topics/ui/ui-events.html)

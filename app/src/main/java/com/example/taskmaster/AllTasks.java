@@ -85,8 +85,10 @@ public class AllTasks extends AppCompatActivity implements TaskAdapter.OnTaskIte
                     List<ListTasksQuery.Item> items = response.data().listTasks().items();
                     tasks.clear();
 
+
                     for(ListTasksQuery.Item item : items) {
-                        tasks.add(new Task(item)); // <-- new constructor written for this to make items into Tasks
+                        Log.i("itemtobeadded", item.team().name()); // logs team names of items added to tasks
+                        tasks.add(new Task(item)); // <-- new constructor was written for this to make items into Tasks
                     }
                     // tell recyclerView that stuff has changed
                     recyclerView.getAdapter().notifyDataSetChanged();

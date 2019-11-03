@@ -32,8 +32,11 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
 
     private List<Task> tasks; // Instance variable for recycler view
-    RecyclerView recyclerView; // Instance variable for awsAppSyncClient
+    private List<Task> taskTeamNames;
     private String teamname;
+    private String teamId;
+    RecyclerView recyclerView; // Instance variable for awsAppSyncClient
+
     AWSAppSyncClient awsAppSyncClient;
 
     private static final String TAG = "MainActivity"; // this helps filter logs
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
         // ==== Call Method ==============
         // run graphql queries
+        queryAllTasks();
         queryTeamTasks();
     }
 
@@ -69,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         setContentView(R.layout.activity_main);
 
         tasks = new LinkedList<>();
+        taskTeamNames = new LinkedList<>();
 
         // Connect to AWS
         awsAppSyncClient = AWSAppSyncClient.builder()
@@ -105,14 +110,63 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     }
 
     // === Starts activity over in Settings ===
-    public void goToSettingsActivity(View v) {  // <------------------------ When does this run?
+    public void goToSettingsActivity(View v) {
         Intent i = new Intent(this, Settings.class);
         this.startActivity(i);
     }
 
+     //======== Query the AWS DynamoDB for All Tasks to Get Team Names ==============
+
+    public void queryAllTasks() {
+
+        awsAppSyncClient.query(ListTasksQuery.builder().build())
+                .responseFetcher(AppSyncResponseFetchers.NETWORK_ONLY)
+                .enqueue(getAllTasksCallback);
+    }
+
+    // **** This method should produce an id that can be used in queryTeamTasks... but it's not yet working *******
+    public GraphQLCall.Callback<ListTasksQuery.Data> getAllTasksCallback = new GraphQLCall.Callback<ListTasksQuery.Data>() {
+        @Override
+        public void onResponse(@Nonnull final com.apollographql.apollo.api.Response<ListTasksQuery.Data> response) {
+            Handler handlerForMainThread = new Handler(Looper.getMainLooper()){
+                @Override
+                public void handleMessage(Message inputMessage) {
+                    List<ListTasksQuery.Item> items = response.data().listTasks().items();
+
+                    Log.i("idInfo", teamname);
+
+                    teamId = "";
+
+                    for(ListTasksQuery.Item item : items) {
+                        Log.i("items", item.toString());
+
+                        //Log.i("idInfo", item.team().id()); // gets team Id
+                        //Log.i("nameInfo", item.team().name());
+
+                        if(teamname.equals("team")) {
+                            teamId = item.team().id(); // now, put that teamId into queryTeamTasks id
+                            Log.i("idInfo", teamId);
+                        } else if (teamname.equals(item.team().id())){
+                            Log.i("idInfo", "teamname doesn't match");
+                        }
+                    }
+                    Log.i("itemAdded", taskTeamNames.toString());
+
+                }
+            };
+
+            handlerForMainThread.obtainMessage().sendToTarget();
+        }
+
+        @Override
+        public void onFailure(@Nonnull ApolloException e) {
+            Log.e("graphqlgetall", e.getMessage());
+        }
+    };
 
 
-    // ======== Query the AWS DynamoDB ==============
+
+    // ======== Query the AWS DynamoDB for Team Task Info ==============
 
     public void queryTeamTasks() {
 
@@ -124,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         awsAppSyncClient.query(query)
                 .responseFetcher(AppSyncResponseFetchers.NETWORK_ONLY)
                 .enqueue(new GraphQLCall.Callback<GetTeamQuery.Data>() {
+
             @Override
             public void onResponse(@Nonnull Response<GetTeamQuery.Data> response) {
 
@@ -131,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                 final LinkedList<Task> appTasks = new LinkedList<>();
 
                 for(GetTeamQuery.Item task : tasks) {
+                    Log.i("taskTitle", task.title());
                     appTasks.add(new Task(task.title(), task.body()));  // <------ get taskstate?
                 }
                 Handler handler = new Handler(Looper.getMainLooper()) {
@@ -148,50 +204,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
             }
         });
-
-
     }
-//    public void queryTeamTasks() {
-//        Log.i("graphqlgetall", "made it into queryTeamTasks method");
-//
-////        awsAppSyncClient.query(ListTasksQuery.builder().build())
-//        awsAppSyncClient.query(ListTeamsQuery.builder().build())
-//                .responseFetcher(AppSyncResponseFetchers.NETWORK_ONLY)
-//                .enqueue(getTeamTasksCallback);
-//    }
-//
-//    public GraphQLCall.Callback<GetTeamQuery.Data> getTeamTasksCallback = new GraphQLCall.Callback<GetTeamsQuery.Data>() {
-//
-//        @Override
-//        public void onResponse(@Nonnull final com.apollographql.apollo.api.Response<ListTeamsQuery.Data> response) {
-//
-//            List<GetTeamQuery.Item> tasks = response.data().listTeams().items();  // <------------------ RETURN HERE!!!!!!!!
-//
-////            Handler handlerForMainThread = new Handler(Looper.getMainLooper()){
-////
-////                @Override
-////                public void handleMessage(Message inputMessage) {
-////                    Log.i("qraphqlgetall", "made it to the callback");
-////
-////                    List<ListTasksQuery.Item> items = response.data().listTasks().items();
-////                    tasks.clear();
-////
-////                    for(ListTasksQuery.Item item : items) {
-////                        tasks.add(new Task(item)); // <-- new constructor written for this to make items into Tasks
-////                    }
-////                    // tell recyclerView that stuff has changed
-////                    recyclerView.getAdapter().notifyDataSetChanged();
-////                }
-////            };
-////            // last step for updating the recyclerView given presence of handler to deal with main thread.
-////            handlerForMainThread.obtainMessage().sendToTarget();
-//        }
-//
-//        @Override
-//        public void onFailure(@Nonnull ApolloException e) {
-//            Log.e("graphqlgetall", e.getMessage());
-//        }
-//    };
+
 
     // === Takes user to detail page when a task is clicked on ===
     @Override
