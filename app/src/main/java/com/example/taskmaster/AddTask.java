@@ -75,7 +75,8 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
 
         // Grab all team data from the cloud and update spinner with the team names
         ListTeamsQuery query = ListTeamsQuery.builder().build();
-        awsAppSyncClient.query(query).enqueue(new GraphQLCall.Callback<ListTeamsQuery.Data>() {
+        awsAppSyncClient.query(query)
+                .enqueue(new GraphQLCall.Callback<ListTeamsQuery.Data>() {
             @Override
             public void onResponse(@Nonnull final Response<ListTeamsQuery.Data> response) {
                 // response should have all Team data from the cloud
@@ -91,6 +92,7 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
                             teamNames.add(team.name());
                         }
 
+                        // add teamNames to the spinner
                         Spinner spinner =  findViewById(R.id.spinner);
                         ArrayAdapter<String> adapter = new ArrayAdapter(AddTask.this,
                                 android.R.layout.simple_spinner_item, teamNames);
@@ -166,6 +168,7 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         teamName = teams.get(position).id();
+        Log.i("sharina", teamName); // shows the id that is in the database of the team chosen in dropdown
     }
 
     @Override
