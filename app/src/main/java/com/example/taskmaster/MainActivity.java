@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         // grab username and teamname from sharedprefs
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String username = prefs.getString("username", "user");
+        String teamId = prefs.getString("teamId", "userTeam");
         this.teamname = prefs.getString("teamname", "team");
 
         Log.w(TAG, username);
@@ -173,6 +174,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         // hardcoded id from teamOne in database
         String id = "2b6533c1-931f-4aef-91a1-ccf65635b4ed";
 
+        // *************** There is a Null Pointer Exception! Something about id == null when teamId
+        // is used in place of id. ************************
+
         // create query
         GetTeamQuery query = GetTeamQuery.builder().id(id).build();
         awsAppSyncClient.query(query)
@@ -187,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
                 for(GetTeamQuery.Item task : tasks) {
                     Log.i("taskTitle", task.title());
-                    appTasks.add(new Task(task.title(), task.body()));  // <------ get taskstate?
+                    appTasks.add(new Task(task.title(), task.body()));
                 }
                 Handler handler = new Handler(Looper.getMainLooper()) {
                     @Override

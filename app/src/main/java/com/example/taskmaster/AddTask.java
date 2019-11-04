@@ -165,6 +165,7 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
     };
     // =========================
 
+    // methods from spinner
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         teamName = teams.get(position).id();
