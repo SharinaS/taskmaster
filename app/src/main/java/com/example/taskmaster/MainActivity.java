@@ -38,8 +38,12 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     private List<Task> tasks; // Instance variable for recycler view
     private List<Task> taskTeamNames;
     private String teamname;
+
+    // variables from Settings, from data acquired from Spinner
     private String teamId;
-    RecyclerView recyclerView; // Instance variable for awsAppSyncClient
+    private String nameOfTeam;
+
+    RecyclerView recyclerView;
 
     AWSAppSyncClient awsAppSyncClient;
 
@@ -61,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
         //String username = prefs.getString("username", "user");
         teamId = prefs.getString("teamId", "2b6533c1-931f-4aef-91a1-ccf65635b4ed");
+        nameOfTeam = prefs.getString("nameOfTeam", "Team One");
 
         //this.teamname = prefs.getString("teamname", "team");
 
@@ -70,8 +75,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         //TextView nameTextView = findViewById(R.id.helloTextView);
         //nameTextView.setText("Hello " + username + "!");
 
-        //TextView teamTextView = findViewById(R.id.team);
-        //teamTextView.setText("Team Name: " + teamname);
+        TextView teamTextView = findViewById(R.id.team);
+        teamTextView.setText("Team Name: " + nameOfTeam);
 
         // ==== Call Method ==============
         // run graphql queries
@@ -87,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
         // for starting of app, to show a team's tasks
         teamId = "2b6533c1-931f-4aef-91a1-ccf65635b4ed";
+        nameOfTeam = "Team One";
 
         tasks = new LinkedList<>();
         taskTeamNames = new LinkedList<>();
@@ -102,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
             @Override
             public void onResult(UserStateDetails result) {
                 Log.i("sharina.login", result.getUserState().toString());
+
                 if (result.getUserState().toString().equals("SIGNED_OUT")) {
                     AWSMobileClient.getInstance().showSignIn(MainActivity.this,
 
@@ -111,19 +118,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                                 @Override
                                 public void onResult(UserStateDetails result) {
                                     Log.i("sharina.signin", result.getUserState().toString());
-//                                    // handler for the main thread
-//                                    Handler handler = new Handler(Looper.getMainLooper()) {
-//                                        @Override
-//                                        public void handleMessage (Message message) {
-//                                            // get Username from AWS cognito login for showing username when app restarts
-//                                            String cognitoUsername = AWSMobileClient.getInstance().getUsername();
-//                                            TextView helloTextView = findViewById(R.id.helloTextView);
-//                                            helloTextView.setText("Hello, " + cognitoUsername + "!");
-//                                            Log.i("sharina.u", cognitoUsername + "");
-//                                        }
-//                                    };
-//                                    handler.obtainMessage().sendToTarget();
-//                                    Log.i("sharina.u", "success in setting username!");
                                 }
 
                                 @Override
@@ -194,6 +188,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                 // change greeting on main activity to a goodbye
                 TextView helloTextView = findViewById(R.id.helloTextView);
                 helloTextView.setText("Bye Bye, " + cognitoUsername + "!");
+
+                // ToDo: when signout occurs, signin view either appears, or app closes
             }
         });
 

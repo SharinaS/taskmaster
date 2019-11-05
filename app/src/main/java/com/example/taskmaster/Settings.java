@@ -37,7 +37,8 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
 
     final List<ListTeamsQuery.Item> teams = new LinkedList<>();
 
-    public String teamName = null;
+    public String teamIdFromDB = null;
+    public String teamNameFromDB = null;
 
 
     @Override
@@ -96,8 +97,10 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
     // spinner needs these two methods
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        teamName = teams.get(position).id();
-        Log.i("sharina", teamName); // shows the id that is in the database of the team chosen in dropdown
+        teamIdFromDB = teams.get(position).id();
+        teamNameFromDB = teams.get(position).name();
+        Log.i("teamInfo", teamNameFromDB);
+        Log.i("teamInfo", teamIdFromDB); // shows the id that is in the database of the team chosen in dropdown
     }
 
     @Override
@@ -109,19 +112,24 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
         System.out.println("button pressed");
 
         // === save what the user types into Shared Preferences
-        EditText nameEditText = findViewById(R.id.enterUsername);
-        EditText teamNameEditText = findViewById(R.id.enterTeamName);
-        String name = nameEditText.getText().toString();
-        String team = teamNameEditText.getText().toString();
+//        EditText nameEditText = findViewById(R.id.enterUsername);
+//        EditText teamNameEditText = findViewById(R.id.enterTeamName);
+//        String name = nameEditText.getText().toString();
+//        String team = teamNameEditText.getText().toString();
 
         // grab the SharedPreference in which to save the data
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         // save the data
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("username", name);
-        editor.putString("teamname", team);
-        editor.putString("teamId", teamName);
+//        editor.putString("username", name);
+//        editor.putString("teamname", team);
+
+        // data pulled from Spinner, which pulls from AWS DB
+        editor.putString("teamId", teamIdFromDB);
+        editor.apply();
+
+        editor.putString("nameOfTeam", teamNameFromDB);
         editor.apply();
 
         // Send user back to the Main Page

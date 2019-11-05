@@ -103,6 +103,8 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
                         // When something gets picked, tell AddTask
                         spinner.setOnItemSelectedListener(AddTask.this);
 
+                        // ToDo: Add nameOfTeam and teamId to saved preferences, just like in Settings page, so when add task button is pushed, those things update the main activity page.
+
                     }
                 };
                 h.obtainMessage().sendToTarget();
