@@ -50,6 +50,11 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     protected void onResume() {
         super.onResume();
 
+        // get Username from AWS cognito login
+        String cognitoUsername = AWSMobileClient.getInstance().getUsername();
+        TextView helloTextView = findViewById(R.id.helloTextView);
+        helloTextView.setText("Hello, " + cognitoUsername + "!");
+
         //===== Shared Preferences ========
         // grab username and teamname from sharedprefs
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -93,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                 Log.i("sharina.login", result.getUserState().toString());
                 if (result.getUserState().toString().equals("SIGNED_OUT")) {
                     AWSMobileClient.getInstance().showSignIn(MainActivity.this,
-                            // COME BACK HERE TO DO SIGN IN OPTIONS
+                            // COME BACK HERE TO DO SIGN IN OPTIONS <------------------------------------------!!!!
                             new com.amazonaws.mobile.client.Callback<UserStateDetails>() {
                                 @Override
                                 public void onResult(UserStateDetails result) {
@@ -122,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new TaskAdapter(tasks, this));
 
+
         // =============== Buttons =========
         //  Button that takes user to Add Task Page
         Button goToAddTaskButton = findViewById(R.id.goAddTaskButton);
@@ -143,7 +149,21 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
             }
         });
 
-        
+        // Button that lets a user log out
+        Button goLogoutButton = findViewById(R.id.logout);
+        goLogoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String cognitoUsername = AWSMobileClient.getInstance().getUsername();
+                AWSMobileClient.getInstance().signOut();
+
+                // change greeting on main activity to a goodbye
+                TextView helloTextView = findViewById(R.id.helloTextView);
+                helloTextView.setText("Bye Bye, " + cognitoUsername + "!");
+            }
+        });
+
+
     }
 
     // === Starts activity over in Settings ===
