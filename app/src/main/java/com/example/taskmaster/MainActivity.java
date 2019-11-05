@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         // grab username and teamname from sharedprefs
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String username = prefs.getString("username", "user");
-        String teamId = prefs.getString("teamId", "userTeam");
+        teamId = prefs.getString("teamId", "2b6533c1-931f-4aef-91a1-ccf65635b4ed");
         this.teamname = prefs.getString("teamname", "team");
 
         Log.w(TAG, username);
@@ -82,6 +82,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // for starting of app, to show a team's tasks
+        teamId = "2b6533c1-931f-4aef-91a1-ccf65635b4ed";
+
         tasks = new LinkedList<>();
         taskTeamNames = new LinkedList<>();
 
@@ -98,7 +101,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                 Log.i("sharina.login", result.getUserState().toString());
                 if (result.getUserState().toString().equals("SIGNED_OUT")) {
                     AWSMobileClient.getInstance().showSignIn(MainActivity.this,
-                            // COME BACK HERE TO DO SIGN IN OPTIONS <------------------------------------------!!!!
+
+                            // ToDo: SignIn options - can change background image.
+
                             new com.amazonaws.mobile.client.Callback<UserStateDetails>() {
                                 @Override
                                 public void onResult(UserStateDetails result) {
@@ -234,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         // is used in place of id. ************************
 
         // create query
-        GetTeamQuery query = GetTeamQuery.builder().id(id).build();
+        GetTeamQuery query = GetTeamQuery.builder().id(teamId).build();
         awsAppSyncClient.query(query)
                 .responseFetcher(AppSyncResponseFetchers.NETWORK_ONLY)
                 .enqueue(new GraphQLCall.Callback<GetTeamQuery.Data>() {
