@@ -77,12 +77,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="181">
-              <caret line="197" column="44" selection-start-line="197" selection-start-column="36" selection-end-line="197" selection-end-column="44" />
+            <state relative-caret-position="598">
+              <caret line="149" column="21" lean-forward="true" selection-start-line="149" selection-start-column="21" selection-end-line="149" selection-end-column="21" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#5977#6171#0" expanded="true" />
-                <element signature="e#6170#6171#0" expanded="true" />
+                <element signature="e#8264#8740#0" expanded="true" />
+                <element signature="e#8739#8740#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -139,7 +139,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>task</find>
       <find>teamNam</find>
       <find>teamNames</find>
       <find>taskInterface</find>
@@ -160,7 +159,6 @@
       <find>tasks.clear</find>
       <find>taskTeamNames</find>
       <find>tasks</find>
-      <find>sharina</find>
       <find>listtasksquery</find>
       <find>spinner</find>
       <find>teams</find>
@@ -169,6 +167,8 @@
       <find>teamId</find>
       <find>teamname</find>
       <find>teamName</find>
+      <find>sharina</find>
+      <find>handler</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -723,9 +723,9 @@
       <window_info id="Build Variants" order="4" side_tool="true" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Resources Explorer" order="6" weight="0.32956383" />
-      <window_info active="true" content_ui="combo" id="Project" order="7" sideWeight="0.4955157" visible="true" weight="0.19183673" />
+      <window_info content_ui="combo" id="Project" order="7" sideWeight="0.4955157" visible="true" weight="0.19183673" />
       <window_info id="Captures" order="8" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Logcat" order="0" weight="0.3258427" />
+      <window_info active="true" anchor="bottom" id="Logcat" order="0" visible="true" weight="0.14125201" />
       <window_info anchor="bottom" id="TODO" order="1" weight="0.32840723" />
       <window_info anchor="bottom" id="Debug" order="2" weight="0.28846154" />
       <window_info anchor="bottom" id="Terminal" order="3" weight="0.32930514" />
@@ -733,7 +733,7 @@
       <window_info anchor="bottom" id="Event Log" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Build" order="6" weight="0.3883495" />
       <window_info anchor="bottom" id="Android Profiler" order="7" />
-      <window_info anchor="bottom" id="Run" order="8" weight="0.22150883" />
+      <window_info anchor="bottom" id="Run" order="8" weight="0.8009631" />
       <window_info anchor="bottom" id="Find" order="9" weight="0.32779455" />
       <window_info anchor="right" id="Capture Analysis" order="0" />
       <window_info anchor="right" id="Gradle" order="1" weight="0.024271844" />
@@ -1030,12 +1030,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="197" column="44" selection-start-line="197" selection-start-column="36" selection-end-line="197" selection-end-column="44" />
+        <state relative-caret-position="598">
+          <caret line="149" column="21" lean-forward="true" selection-start-line="149" selection-start-column="21" selection-end-line="149" selection-end-column="21" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5977#6171#0" expanded="true" />
-            <element signature="e#6170#6171#0" expanded="true" />
+            <element signature="e#8264#8740#0" expanded="true" />
+            <element signature="e#8739#8740#0" expanded="true" />
           </folding>
         </state>
       </provider>

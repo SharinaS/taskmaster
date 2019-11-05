@@ -54,25 +54,28 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         String cognitoUsername = AWSMobileClient.getInstance().getUsername();
         TextView helloTextView = findViewById(R.id.helloTextView);
         helloTextView.setText("Hello, " + cognitoUsername + "!");
+        Log.i("sharina.u", cognitoUsername + "");
 
         //===== Shared Preferences ========
-        // grab username and teamname from sharedprefs
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String username = prefs.getString("username", "user");
-        teamId = prefs.getString("teamId", "2b6533c1-931f-4aef-91a1-ccf65635b4ed");
-        this.teamname = prefs.getString("teamname", "team");
 
-        Log.w(TAG, username);
+        //String username = prefs.getString("username", "user");
+        teamId = prefs.getString("teamId", "2b6533c1-931f-4aef-91a1-ccf65635b4ed");
+
+        //this.teamname = prefs.getString("teamname", "team");
+
+        //Log.w(TAG, username);
 
         // Add info from shared prefs to textViews on mainactivity page:
-        TextView nameTextView = findViewById(R.id.helloTextView);
-        TextView teamTextView = findViewById(R.id.team);
-        nameTextView.setText("Hello " + username + "!");
-        teamTextView.setText("Team Name: " + teamname);
+        //TextView nameTextView = findViewById(R.id.helloTextView);
+        //nameTextView.setText("Hello " + username + "!");
+
+        //TextView teamTextView = findViewById(R.id.team);
+        //teamTextView.setText("Team Name: " + teamname);
 
         // ==== Call Method ==============
         // run graphql queries
-        queryAllTasks();
+        //queryAllTasks();
         queryTeamTasks();
     }
 
@@ -108,16 +111,42 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                                 @Override
                                 public void onResult(UserStateDetails result) {
                                     Log.i("sharina.signin", result.getUserState().toString());
+//                                    // handler for the main thread
+//                                    Handler handler = new Handler(Looper.getMainLooper()) {
+//                                        @Override
+//                                        public void handleMessage (Message message) {
+//                                            // get Username from AWS cognito login for showing username when app restarts
+//                                            String cognitoUsername = AWSMobileClient.getInstance().getUsername();
+//                                            TextView helloTextView = findViewById(R.id.helloTextView);
+//                                            helloTextView.setText("Hello, " + cognitoUsername + "!");
+//                                            Log.i("sharina.u", cognitoUsername + "");
+//                                        }
+//                                    };
+//                                    handler.obtainMessage().sendToTarget();
+//                                    Log.i("sharina.u", "success in setting username!");
                                 }
 
                                 @Override
                                 public void onError(Exception e) {
-
+                                    Log.e("sharina.u",e.getMessage());
                                 }
                             });
+                } else {
+                    Handler handler = new Handler(Looper.getMainLooper()) {
+                        @Override
+                        public void handleMessage (Message message) {
+                            // get Username from AWS cognito login for showing username when app restarts
+                            String cognitoUsername = AWSMobileClient.getInstance().getUsername();
+                            TextView helloTextView = findViewById(R.id.helloTextView);
+                            helloTextView.setText("Hello, " + cognitoUsername + "!");
+                            Log.i("sharina.u", cognitoUsername + "");
+                        }
+                    };
+                    handler.obtainMessage().sendToTarget();
+                    Log.i("sharina.u", "success in setting username!");
+
                 }
             }
-
             @Override
             public void onError(Exception e) {
 
@@ -177,54 +206,54 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         this.startActivity(i);
     }
 
-     //======== Query the AWS DynamoDB for All Tasks to Get Team Names ==============
-
-    public void queryAllTasks() {
-
-        awsAppSyncClient.query(ListTasksQuery.builder().build())
-                .responseFetcher(AppSyncResponseFetchers.NETWORK_ONLY)
-                .enqueue(getAllTasksCallback);
-    }
-
-    // **** This method should produce an id that can be used in queryTeamTasks... but it's not yet working *******
-    public GraphQLCall.Callback<ListTasksQuery.Data> getAllTasksCallback = new GraphQLCall.Callback<ListTasksQuery.Data>() {
-        @Override
-        public void onResponse(@Nonnull final com.apollographql.apollo.api.Response<ListTasksQuery.Data> response) {
-            Handler handlerForMainThread = new Handler(Looper.getMainLooper()){
-                @Override
-                public void handleMessage(Message inputMessage) {
-                    List<ListTasksQuery.Item> items = response.data().listTasks().items();
-
-                    Log.i("idInfo", teamname);
-
-                    teamId = "";
-
-                    for(ListTasksQuery.Item item : items) {
-                        Log.i("items", item.toString());
-
-                        //Log.i("idInfo", item.team().id()); // gets team Id
-                        //Log.i("nameInfo", item.team().name());
-
-                        if(teamname.equals("team")) {
-                            teamId = item.team().id(); // now, put that teamId into queryTeamTasks id
-                            Log.i("idInfo", teamId);
-                        } else if (teamname.equals(item.team().id())){
-                            Log.i("idInfo", "teamname doesn't match");
-                        }
-                    }
-                    Log.i("itemAdded", taskTeamNames.toString());
-
-                }
-            };
-
-            handlerForMainThread.obtainMessage().sendToTarget();
-        }
-
-        @Override
-        public void onFailure(@Nonnull ApolloException e) {
-            Log.e("graphqlgetall", e.getMessage());
-        }
-    };
+//     //======== Query the AWS DynamoDB for All Tasks to Get Team Names ==============
+//
+//    public void queryAllTasks() {
+//
+//        awsAppSyncClient.query(ListTasksQuery.builder().build())
+//                .responseFetcher(AppSyncResponseFetchers.NETWORK_ONLY)
+//                .enqueue(getAllTasksCallback);
+//    }
+//
+//    // **** This method should produce an id that can be used in queryTeamTasks... but it's not yet working *******
+//    public GraphQLCall.Callback<ListTasksQuery.Data> getAllTasksCallback = new GraphQLCall.Callback<ListTasksQuery.Data>() {
+//        @Override
+//        public void onResponse(@Nonnull final com.apollographql.apollo.api.Response<ListTasksQuery.Data> response) {
+//            Handler handlerForMainThread = new Handler(Looper.getMainLooper()){
+//                @Override
+//                public void handleMessage(Message inputMessage) {
+//                    List<ListTasksQuery.Item> items = response.data().listTasks().items();
+//
+//                    Log.i("idInfo", teamname);
+//
+//                    teamId = "";
+//
+//                    for(ListTasksQuery.Item item : items) {
+//                        Log.i("items", item.toString());
+//
+//                        //Log.i("idInfo", item.team().id()); // gets team Id
+//                        //Log.i("nameInfo", item.team().name());
+//
+//                        if(teamname.equals("team")) {
+//                            teamId = item.team().id(); // now, put that teamId into queryTeamTasks id
+//                            Log.i("idInfo", teamId);
+//                        } else if (teamname.equals(item.team().id())){
+//                            Log.i("idInfo", "teamname doesn't match");
+//                        }
+//                    }
+//                    Log.i("itemAdded", taskTeamNames.toString());
+//
+//                }
+//            };
+//
+//            handlerForMainThread.obtainMessage().sendToTarget();
+//        }
+//
+//        @Override
+//        public void onFailure(@Nonnull ApolloException e) {
+//            Log.e("graphqlgetall", e.getMessage());
+//        }
+//    };
 
 
 
@@ -235,8 +264,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         // hardcoded id from teamOne in database
         String id = "2b6533c1-931f-4aef-91a1-ccf65635b4ed";
 
-        // *************** There is a Null Pointer Exception! Something about id == null when teamId
-        // is used in place of id. ************************
 
         // create query
         GetTeamQuery query = GetTeamQuery.builder().id(teamId).build();
@@ -259,7 +286,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                     public void handleMessage (Message message) {
                         recyclerView.setAdapter(new TaskAdapter(appTasks, MainActivity.this));
                     }
-
                 };
                 handler.obtainMessage().sendToTarget();
             }
