@@ -18,6 +18,10 @@ import android.widget.TextView;
 import com.amazonaws.amplify.generated.graphql.GetTeamQuery;
 import com.amazonaws.amplify.generated.graphql.ListTasksQuery;
 import com.amazonaws.amplify.generated.graphql.ListTeamsQuery;
+import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobile.client.Callback;
+import com.amazonaws.mobile.client.SignInUIOptions;
+import com.amazonaws.mobile.client.UserStateDetails;
 import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
 import com.amazonaws.mobileconnectors.appsync.fetcher.AppSyncResponseFetchers;
@@ -82,13 +86,43 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                 .awsConfiguration(new AWSConfiguration(getApplicationContext()))
                 .build();
 
-        // ====== Recycler and Adapter Code =========
+        // ====== Initialization for AWS cognito =======
+        AWSMobileClient.getInstance().initialize(getApplicationContext(), new Callback<UserStateDetails>() {
+            @Override
+            public void onResult(UserStateDetails result) {
+                Log.i("sharina.login", result.getUserState().toString());
+                if (result.getUserState().toString().equals("SIGNED_OUT")) {
+                    AWSMobileClient.getInstance().showSignIn(MainActivity.this,
+                            // COME BACK HERE TO DO SIGN IN OPTIONS
+                            new com.amazonaws.mobile.client.Callback<UserStateDetails>() {
+                                @Override
+                                public void onResult(UserStateDetails result) {
+                                    Log.i("sharina.signin", result.getUserState().toString());
+                                }
+
+                                @Override
+                                public void onError(Exception e) {
+
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        });
+
+
+
+        // =============== Recycler and Adapter Code =========
         // starter code at: // https://developer.android.com/guide/topics/ui/layout/recyclerview
         recyclerView = findViewById(R.id.tasks);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new TaskAdapter(tasks, this));
 
-        // ===== Buttons =========
+        // =============== Buttons =========
         //  Button that takes user to Add Task Page
         Button goToAddTaskButton = findViewById(R.id.goAddTaskButton);
         goToAddTaskButton.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +142,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                 MainActivity.this.startActivity(goToAllTasksView);
             }
         });
+
+        
     }
 
     // === Starts activity over in Settings ===
