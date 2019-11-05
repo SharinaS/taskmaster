@@ -61,7 +61,13 @@ Sharina Stubbs
 * In addition to a username, the user is allowed to type in their team on the Settings page. 
 * Use that Team to display only that team’s tasks on the homepage - in process.
 
+## November 5: Day 8
+* Added Cognito to Amplify setup. 
+* Added in user login and sign up flows to application
+* Used Cognito’s pre-built UI as appropriate. * Displayed the logged in user’s username on the MainActivity.
+* Allowed users to log out of application.
 
+![homepage screenshot](screenshots/sign-in.jpg)
 
 # Resources:
 * [Android Buttons](https://developer.android.com/guide/topics/ui/controls/button.html)
