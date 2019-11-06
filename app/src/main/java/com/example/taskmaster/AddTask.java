@@ -1,16 +1,20 @@
 package com.example.taskmaster;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,9 +26,17 @@ import android.widget.Spinner;
 import com.amazonaws.amplify.generated.graphql.CreateTaskMutation;
 import com.amazonaws.amplify.generated.graphql.CreateTeamMutation;
 import com.amazonaws.amplify.generated.graphql.ListTeamsQuery;
+import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobile.client.Callback;
+import com.amazonaws.mobile.client.UserStateDetails;
 import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
+import com.amazonaws.mobileconnectors.appsync.S3ObjectManagerImplementation;
 import com.amazonaws.mobileconnectors.appsync.fetcher.AppSyncResponseFetchers;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferService;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.apollographql.apollo.GraphQLCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
@@ -45,17 +57,45 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
 
     // Attaching a file
     private static final int READ_REQUEST_CODE = 42;
+    private static volatile S3ObjectManagerImplementation s3ObjectManager;
+    private static int RESULT_LOAD_IMAGE = 1;
+    private String photoPath;
 
     // Instance variable for awsAppSyncClient
     AWSAppSyncClient awsAppSyncClient;
 
     final List<ListTeamsQuery.Item> teams = new LinkedList<>();
     public String teamName = null;
+    public String teamIdFromDB = null;
+    public String teamNameFromDB = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
+
+
+        // ======= Upload File to AWS with TransferUtility==============
+        // https://aws-amplify.github.io/docs/android/storage
+
+        // Upload and download objects from AWS
+//        getApplicationContext().startService(new Intent(getApplicationContext(), TransferService.class));
+//
+//        // Initialize the AWSMobileClient if not initialized
+//        AWSMobileClient.getInstance().initialize(getApplicationContext(), new Callback<UserStateDetails>() {
+//            @Override
+//            public void onResult(UserStateDetails result) {
+//                Log.i(TAG, "AWSMobileClient initialized. User State is " + result.getUserState().toString());
+//                uploadWithTransferUtility();
+//            }
+//
+//            @Override
+//            public void onError(Exception e) {
+//                Log.e(TAG, "Initialization error.", e);
+//
+//            }
+//        });
+
 
         // Connect to AWS
         awsAppSyncClient = AWSAppSyncClient.builder()
@@ -63,7 +103,7 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
                 .awsConfiguration(new AWSConfiguration(getApplicationContext()))
                 .build();
 
-        //=================== Create a Mutation - Run app and go to AddTask View =======================
+        //============= Create a Mutation to Manually Add Teams to DB - Run app and go to AddTask View ======
 //        CreateTeamInput input = CreateTeamInput.builder()
 //                .name("TeamThree")
 //                .build();
@@ -136,9 +176,7 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
                 EditText taskBody = findViewById(R.id.taskDescription);
                 String stringTitle = taskTitle.getText().toString();
                 String stringBody = taskBody.getText().toString();
-
                 Task newTask = new Task(stringTitle, stringBody);
-
                 // add task to dynamoDB
                 runAddTaskMutation(newTask);
 
@@ -198,10 +236,19 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
         // note that in the view, the common attributes for button is set to pickFile in the onClick option
     }
 
+    // ====== File Upload with GraphQL APIs ================
+    // https://aws-amplify.github.io/docs/android/storage
+
+//    public void choosePhoto() {
+//        Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        startActivityForResult(i, RESULT_LOAD_IMAGE);
+//    }
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode,
                                  Intent resultData) {
-
+        super.onActivityResult(requestCode, resultCode, resultData);
         // The ACTION_OPEN_DOCUMENT intent was sent with the request code
         // READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
         // response to some other intent, and the code below shouldn't run at all.
@@ -217,8 +264,58 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
                 Log.i(TAG, "Uri: " + uri.toString());
                 //showImage(uri);
             }
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(uri,
+                    filePathColumn, null, null, null);
+            Log.i(TAG, "cursor: " + cursor);
+
+//            if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != resultData) {
+//                cursor.moveToFirst();
+//                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//
+//                String picturePath = cursor.getString(columnIndex);
+//                Log.i(TAG, "picturePath " + picturePath);
+//                cursor.close();
+//                // String picturePath contains the path of selected Image
+//                photoPath = picturePath;
+//                Log.i(TAG, "photoPath: " + photoPath);
+//            }
+
         }
     }
+//    public static final S3ObjectManagerImplementation getS3ObjectManager(final Context context) {
+//        if (s3ObjectManager == null) {
+//            AmazonS3Client s3Client = new AmazonS3Client(getCredentialsProvider(context));
+//            s3Client.setRegion(Region.getRegion("us-east-1")); // you can set the region of bucket here
+//            s3ObjectManager = new S3ObjectManagerImplementation(s3Client);
+//        }
+//        return s3ObjectManager;
+//    }
+//
+//    // initialize and fetch cognito credentials provider for S3 Object Manager
+//    public static final AWSCredentialsProvider getCredentialsProvider(final Context context){
+//        final CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+//                context,
+//                Constants.COGNITO_IDENTITY, // Identity pool ID
+//                Regions.fromName(Constants.COGNITO_REGION) // Region
+//        );
+//        return credentialsProvider;
+//    }
+//
+//    private void save() {
+//
+//    }
+
+    // ======== File Upload from AWS  with TransferUtility continued ========
+//    public void uploadWithTransferUtility() {
+//        TransferUtility transferUtility =
+//                TransferUtility.builder()
+//                        .context(getApplicationContext())
+//                        .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
+//                        .s3Client(new AmazonS3Client(AWSMobileClient.getInstance()))
+//                        .build();
+//    }
+
 
 }
 

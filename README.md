@@ -91,3 +91,5 @@ Never finished:
 * [OkHttp](https://square.github.io/okhttp)
 * [Android Amplify Framework - Getting Started](https://aws-amplify.github.io/docs/android/start)
 * [Amplify Getting Started](https://aws-amplify.github.io/docs/)
+* [Android File Picker](https://developer.android.com/guide/topics/providers/document-provider)
+* [Amplify S3](https://aws-amplify.github.io/docs/android/storage)
