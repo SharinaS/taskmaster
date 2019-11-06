@@ -1,6 +1,7 @@
 package com.example.taskmaster;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
@@ -33,7 +34,10 @@ import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
 import com.amazonaws.mobileconnectors.appsync.S3ObjectManagerImplementation;
 import com.amazonaws.mobileconnectors.appsync.fetcher.AppSyncResponseFetchers;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferService;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
@@ -41,6 +45,7 @@ import com.apollographql.apollo.GraphQLCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -48,6 +53,8 @@ import javax.annotation.Nonnull;
 
 import type.CreateTaskInput;
 import type.CreateTeamInput;
+
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 
 public class AddTask extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -75,13 +82,16 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
         setContentView(R.layout.activity_add_task);
 
 
-        // ======= Upload File to AWS with TransferUtility==============
-        // https://aws-amplify.github.io/docs/android/storage
+         //======= Upload File to AWS with TransferUtility==============
+         // https://aws-amplify.github.io/docs/android/storage
 
-        // Upload and download objects from AWS
-//        getApplicationContext().startService(new Intent(getApplicationContext(), TransferService.class));
-//
-//        // Initialize the AWSMobileClient if not initialized
+         //Upload and download objects from AWS
+        getApplicationContext().startService(new Intent(getApplicationContext(), TransferService.class));
+
+        String[] permissions = {READ_EXTERNAL_STORAGE};
+        ActivityCompat.requestPermissions(this, permissions, 1);
+
+        // Initialize the AWSMobileClient if not initialized
 //        AWSMobileClient.getInstance().initialize(getApplicationContext(), new Callback<UserStateDetails>() {
 //            @Override
 //            public void onResult(UserStateDetails result) {
@@ -229,20 +239,9 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
     // =========== Pick a File using S3 ================
     // https://developer.android.com/guide/topics/providers/document-provider
     public void pickFile (View v) {
-        Intent intent = new Intent (Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("*/*");
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, READ_REQUEST_CODE);
-        // note that in the view, the common attributes for button is set to pickFile in the onClick option
     }
-
-    // ====== File Upload with GraphQL APIs ================
-    // https://aws-amplify.github.io/docs/android/storage
-
-//    public void choosePhoto() {
-//        Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//        startActivityForResult(i, RESULT_LOAD_IMAGE);
-//    }
 
 
     @Override
@@ -262,61 +261,58 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
             if (resultData != null) {
                 uri = resultData.getData();
                 Log.i(TAG, "Uri: " + uri.toString());
-                //showImage(uri);
-            }
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getContentResolver().query(uri,
-                    filePathColumn, null, null, null);
-            Log.i(TAG, "cursor: " + cursor);
+                // actually get path from URI
+                Uri selectedImage = uri;
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                Log.i(TAG, "cursor: " + cursor);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String picturePath = cursor.getString(columnIndex);
+                cursor.close();
 
-//            if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != resultData) {
-//                cursor.moveToFirst();
-//                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//
-//                String picturePath = cursor.getString(columnIndex);
-//                Log.i(TAG, "picturePath " + picturePath);
-//                cursor.close();
-//                // String picturePath contains the path of selected Image
-//                photoPath = picturePath;
-//                Log.i(TAG, "photoPath: " + photoPath);
-//            }
+                TransferUtility transferUtility =
+                        TransferUtility.builder()
+                                .context(getApplicationContext())
+                                .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
+                                .s3Client(new AmazonS3Client(AWSMobileClient.getInstance()))
+                                .build();
+                TransferObserver uploadObserver =
+                        transferUtility.upload(
+                                // filename in the cloud
+                                "public/picolas",
+                                new File(picturePath));
+
+                // Attach a listener to the observer to get state update and progress notifications
+                uploadObserver.setTransferListener(new TransferListener() {
+
+                    @Override
+                    public void onStateChanged(int id, TransferState state) {
+                        if (TransferState.COMPLETED == state) {
+                            // Handle a completed upload.
+                        }
+                    }
+
+                    @Override
+                    public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                        float percentDonef = ((float) bytesCurrent / (float) bytesTotal) * 100;
+                        int percentDone = (int)percentDonef;
+
+                        Log.d(TAG, "ID:" + id + " bytesCurrent: " + bytesCurrent
+                                + " bytesTotal: " + bytesTotal + " " + percentDone + "%");
+
+                    }
+
+                    @Override
+                    public void onError(int id, Exception ex) {
+
+                    }
+                });
+            }
 
         }
     }
-//    public static final S3ObjectManagerImplementation getS3ObjectManager(final Context context) {
-//        if (s3ObjectManager == null) {
-//            AmazonS3Client s3Client = new AmazonS3Client(getCredentialsProvider(context));
-//            s3Client.setRegion(Region.getRegion("us-east-1")); // you can set the region of bucket here
-//            s3ObjectManager = new S3ObjectManagerImplementation(s3Client);
-//        }
-//        return s3ObjectManager;
-//    }
-//
-//    // initialize and fetch cognito credentials provider for S3 Object Manager
-//    public static final AWSCredentialsProvider getCredentialsProvider(final Context context){
-//        final CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
-//                context,
-//                Constants.COGNITO_IDENTITY, // Identity pool ID
-//                Regions.fromName(Constants.COGNITO_REGION) // Region
-//        );
-//        return credentialsProvider;
-//    }
-//
-//    private void save() {
-//
-//    }
-
-    // ======== File Upload from AWS  with TransferUtility continued ========
-//    public void uploadWithTransferUtility() {
-//        TransferUtility transferUtility =
-//                TransferUtility.builder()
-//                        .context(getApplicationContext())
-//                        .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
-//                        .s3Client(new AmazonS3Client(AWSMobileClient.getInstance()))
-//                        .build();
-//    }
-
-
 }
 
 
