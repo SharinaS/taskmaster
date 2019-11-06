@@ -21,6 +21,7 @@ import com.amazonaws.amplify.generated.graphql.ListTeamsQuery;
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobile.client.Callback;
 import com.amazonaws.mobile.client.SignInUIOptions;
+import com.amazonaws.mobile.client.SignOutOptions;
 import com.amazonaws.mobile.client.UserStateDetails;
 import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
@@ -180,16 +181,31 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         // Button that lets a user log out
         Button goLogoutButton = findViewById(R.id.logout);
         goLogoutButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+
+                // ToDo: when signout occurs, signin view appears. Move signin code into its own method. See FrontRow Nov 5 2:45pm
+//                AWSMobileClient.getInstance().signOut(
+//                        SignOutOptions.builder().build(), new Callback<Void>() {
+//                            @Override
+//                            public void onResult(Void result) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onError(Exception e) {
+//
+//                            }
+//                        }
+//                );
+
                 String cognitoUsername = AWSMobileClient.getInstance().getUsername();
                 AWSMobileClient.getInstance().signOut();
 
                 // change greeting on main activity to a goodbye
                 TextView helloTextView = findViewById(R.id.helloTextView);
                 helloTextView.setText("Bye Bye, " + cognitoUsername + "!");
-
-                // ToDo: when signout occurs, signin view either appears, or app closes
             }
         });
 
@@ -258,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     public void queryTeamTasks() {
 
         // hardcoded id from teamOne in database
-        String id = "2b6533c1-931f-4aef-91a1-ccf65635b4ed";
+        //String id = "2b6533c1-931f-4aef-91a1-ccf65635b4ed";
 
 
         // create query
@@ -270,6 +286,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
             @Override
             public void onResponse(@Nonnull Response<GetTeamQuery.Data> response) {
 
+                // ToDo: Fix potential for null pointer exception when database is empty -- if (tasks or something != null), do the following stuff
                 List<GetTeamQuery.Item> tasks = response.data().getTeam().listOfTasks().items();
                 final LinkedList<Task> appTasks = new LinkedList<>();
 
