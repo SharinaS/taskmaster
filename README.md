@@ -16,6 +16,7 @@ Sharina Stubbs
 * The homepage has two buttons, one which allows the user to go to the Add Task view, and the other that allows the user to go to the All Tasks view. 
 * Added a task page that allows users to type in a title and a body for their task. 
 * Pressing the submit button shows a "Submitted!" label on the task page. 
+
 ![homepage screenshot](screenshots/homepage.jpg)
 
 ## October 23: Day 2
@@ -23,6 +24,7 @@ Sharina Stubbs
 * Created Settings page that allows users to enter their username and hit save.
 * The main page was modified to contain three different buttons with hardcoded task titles. When a user taps one of the titles, it goes to the Task Detail page, and the title at the top of the page matches the task title that was tapped on the previous page.
 * The homepage contains a button to visit the Settings page. Once the user has entered their username, it displays “{username}’s tasks” above the three task buttons.
+
 ![detail screenshot](screenshots/task-detail-page.jpg)
 
 ## October 24: Day 3
@@ -32,6 +34,7 @@ Sharina Stubbs
 *  Created a ViewAdapter class that displays data from a list of Tasks. 
 * Data that displays on home page includes task and task body, and is from hardcoded Task data. 
 * User is able to touch a task in the RecyclerView, and is directed over to a detail page, where the title is rendered correctly (for that task) on the top of that page.
+
 ![homepage screenshot](screenshots/homepage-updated.jpg)
 
 ## October 25: Day 4
@@ -39,10 +42,14 @@ Sharina Stubbs
 * Fleshed out enum (which works with Task status) to integrate with database.
 * Refactored homepage RecyclerView to display all Task entities in database.
 * Description and title of a tapped task is displayed on the detail page.
+
 ![homepage screenshot](screenshots/homepage_database.jpg)
 
 ## October 29: Day 5
-* When application is opened, it can make a request to a backend server URL to fetch Task data using OkHTTP. * Task data is displayed in the RecyclerView.
+* When application is opened, it can make a request to a backend server URL to fetch Task data using OkHTTP.
+
+Never finished:
+* Task data is displayed in the RecyclerView.
 * Add Task form modified to post entered task data to the server.
 * Homepage refreshes Tasks shown after a task is added.
 
@@ -62,10 +69,11 @@ Sharina Stubbs
 * Use that Team to display only that team’s tasks on the homepage - in process.
 
 ## November 5: Day 8
-* Added Cognito to Amplify setup. 
+* Added Amazon Cognito to Amplify setup. 
 * Added in user login and sign up flows to application
-* Used Cognito’s pre-built UI as appropriate. * Displayed the logged in user’s username on the MainActivity.
-* Allowed users to log out of application.
+* Used Cognito’s pre-built UI as appropriate. 
+* Displayed the logged in user’s username on the MainActivity.
+* Users now able to log out of application.
 
 ![homepage screenshot](screenshots/sign-in.jpg)
 
@@ -82,3 +90,4 @@ Sharina Stubbs
 * [Overview: Saving Data with Room](https://developer.android.com/training/data-storage/room)
 * [OkHttp](https://square.github.io/okhttp)
 * [Android Amplify Framework - Getting Started](https://aws-amplify.github.io/docs/android/start)
+* [Amplify Getting Started](https://aws-amplify.github.io/docs/)

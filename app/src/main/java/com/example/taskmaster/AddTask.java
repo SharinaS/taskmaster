@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -37,6 +38,9 @@ import type.CreateTeamInput;
 public class AddTask extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     public AppDatabase db;
+
+    // Attaching a file
+    private static final int READ_REQUEST_CODE = 42;
 
     // Instance variable for awsAppSyncClient
     AWSAppSyncClient awsAppSyncClient;
@@ -178,6 +182,17 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+    // =========== Pick a File using S3 ================
+    // https://developer.android.com/guide/topics/providers/document-provider
+    public void pickFile (View v) {
+        Intent intent = new Intent (Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        startActivityForResult(intent, READ_REQUEST_CODE);
+        // note that in the view, the common attributes for button is set to pickFile in the onClick option
+    }
+
 }
 
 

@@ -15,7 +15,7 @@
         android:text="My Tasks"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/logout"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.065"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,8 +38,10 @@
         android:text="All Tasks"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/goToSettings"
+        app:layout_constraintHorizontal_bias="0.653"
         app:layout_constraintStart_toEndOf="@+id/goAddTaskButton"
-        app:layout_constraintTop_toBottomOf="@+id/tasks" />
+        app:layout_constraintTop_toBottomOf="@+id/tasks"
+        app:layout_constraintVertical_bias="0.18" />
 
     <Button
         android:id="@+id/goToSettings"
@@ -55,11 +57,9 @@
         android:id="@+id/helloTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="188dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="48dp"
         android:text="Hello"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.005"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myTasks" />
 
@@ -68,7 +68,7 @@
         android:layout_width="0dp"
         android:layout_height="360dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
         android:background="#00B65858"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +91,7 @@
         android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="Logout"
         app:layout_constraintEnd_toEndOf="parent"
