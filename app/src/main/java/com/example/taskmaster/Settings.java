@@ -122,8 +122,6 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
 
         // save the data
         SharedPreferences.Editor editor = prefs.edit();
-//        editor.putString("username", name);
-//        editor.putString("teamname", team);
 
         // data pulled from Spinner, which pulls from AWS DB
         editor.putString("teamId", teamIdFromDB);

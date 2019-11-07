@@ -199,7 +199,7 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
 
     }
 
-    // ============== methods from spinner
+    // ============== methods from spinner ==========
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         teamName = teams.get(position).id();
@@ -207,6 +207,19 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
 
         teamIdFromDB = teams.get(position).id();
         teamNameFromDB = teams.get(position).name();
+
+        // grab the SharedPreference in which to save the data
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // save the data
+        SharedPreferences.Editor editor = prefs.edit();
+
+        // data pulled from Spinner, which pulls from AWS DB
+        editor.putString("teamId", teamIdFromDB);
+        editor.apply();
+
+        editor.putString("nameOfTeam", teamNameFromDB);
+        editor.apply();
     }
 
     @Override
