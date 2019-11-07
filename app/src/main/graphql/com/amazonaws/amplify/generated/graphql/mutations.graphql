@@ -5,6 +5,7 @@ mutation CreateTask($input: CreateTaskInput!) {
     title
     body
     taskState
+    image
     team {
       id
       name
@@ -20,6 +21,7 @@ mutation UpdateTask($input: UpdateTaskInput!) {
     title
     body
     taskState
+    image
     team {
       id
       name
@@ -35,6 +37,7 @@ mutation DeleteTask($input: DeleteTaskInput!) {
     title
     body
     taskState
+    image
     team {
       id
       name
@@ -54,6 +57,7 @@ mutation CreateTeam($input: CreateTeamInput!) {
         title
         body
         taskState
+        image
       }
       nextToken
     }
@@ -69,6 +73,7 @@ mutation UpdateTeam($input: UpdateTeamInput!) {
         title
         body
         taskState
+        image
       }
       nextToken
     }
@@ -84,6 +89,7 @@ mutation DeleteTeam($input: DeleteTeamInput!) {
         title
         body
         taskState
+        image
       }
       nextToken
     }

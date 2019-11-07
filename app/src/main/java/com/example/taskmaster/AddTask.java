@@ -48,6 +48,7 @@ import com.apollographql.apollo.exception.ApolloException;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
@@ -67,6 +68,7 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
     private static volatile S3ObjectManagerImplementation s3ObjectManager;
     private static int RESULT_LOAD_IMAGE = 1;
     private String photoPath;
+    private String imageKey;
 
     // Instance variable for awsAppSyncClient
     AWSAppSyncClient awsAppSyncClient;
@@ -186,7 +188,7 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
                 EditText taskBody = findViewById(R.id.taskDescription);
                 String stringTitle = taskTitle.getText().toString();
                 String stringBody = taskBody.getText().toString();
-                Task newTask = new Task(stringTitle, stringBody);
+                Task newTask = new Task(stringTitle, stringBody, null);
                 // add task to dynamoDB
                 runAddTaskMutation(newTask);
 
@@ -205,6 +207,7 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
                 .title(task.getTitle())
                 .body(task.getBody())
                 .taskState(StatusConverter.toInt(task.getTaskState())) // <-- uses the status converter to return the int of the enum
+                .image(imageKey)
                 .build();
         awsAppSyncClient.mutate(CreateTaskMutation.builder().input(createTaskInput).build())
                 .enqueue(addTaskCallback);
@@ -236,8 +239,9 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
     }
 
 
-    // =========== Pick a File using S3 ================
+    // =========== Pick a File and Upload to Cloud Using S3 ================
     // https://developer.android.com/guide/topics/providers/document-provider
+
     public void pickFile (View v) {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, READ_REQUEST_CODE);
@@ -248,29 +252,28 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
     public void onActivityResult(int requestCode, int resultCode,
                                  Intent resultData) {
         super.onActivityResult(requestCode, resultCode, resultData);
-        // The ACTION_OPEN_DOCUMENT intent was sent with the request code
-        // READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
-        // response to some other intent, and the code below shouldn't run at all.
 
         if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            // The document selected by the user won't be returned in the intent.
-            // Instead, a URI to that document will be contained in the return intent
-            // provided to this method as a parameter.
-            // Pull that URI using resultData.getData().
             Uri uri = null;
             if (resultData != null) {
                 uri = resultData.getData();
                 Log.i(TAG, "Uri: " + uri.toString());
+
                 // actually get path from URI
                 Uri selectedImage = uri;
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
                 Cursor cursor = getContentResolver().query(selectedImage,
                         filePathColumn, null, null, null);
                 Log.i(TAG, "cursor: " + cursor);
+
+                Log.i(TAG, "uri is: " + uri);
+
                 cursor.moveToFirst();
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 String picturePath = cursor.getString(columnIndex);
                 cursor.close();
+
+                imageKey = "public/"+ UUID.randomUUID().toString();
 
                 TransferUtility transferUtility =
                         TransferUtility.builder()
@@ -280,8 +283,8 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
                                 .build();
                 TransferObserver uploadObserver =
                         transferUtility.upload(
-                                // filename in the cloud
-                                "public/picolas",
+                                //"public/"+ UUID.randomUUID().toString(),
+                                imageKey,
                                 new File(picturePath));
 
                 // Attach a listener to the observer to get state update and progress notifications
@@ -301,7 +304,6 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
 
                         Log.d(TAG, "ID:" + id + " bytesCurrent: " + bytesCurrent
                                 + " bytesTotal: " + bytesTotal + " " + percentDone + "%");
-
                     }
 
                     @Override
@@ -310,7 +312,6 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
                     }
                 });
             }
-
         }
     }
 }

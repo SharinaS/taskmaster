@@ -3,6 +3,7 @@ type Task @model {
   title: String!
   body: String!
   taskState: Int
+  image: String
   team: Team @connection(name:"TeamNames")
 }
 type Team @model {
@@ -11,14 +12,15 @@ type Team @model {
   listOfTasks: [Task] @connection(name:"TeamNames")
 }
 type S3Object {
-       bucket: String!
-       key: String!
-       region: String!
-  }
-  input S3ObjectInput {
-       bucket: String!
-       key: String!
-       region: String!
-       localUri: String
-       mimeType: String
-  }
+          bucket: String!
+          key: String!
+          region: String!
+     }
+     input S3ObjectInput {
+          bucket: String!
+          key: String!
+          region: String!
+          localUri: String
+          mimeType: String
+     }
+

@@ -17,7 +17,6 @@ public class Task {
     @TypeConverters(StatusConverter.class)
     public TaskState taskState;
 
-
     public enum TaskState {
         NEW(0),
         ASSIGNED(1),
@@ -39,14 +38,17 @@ public class Task {
     // == Task Instance variables
     private String title;
     private String body;
+    private String image;
     // taskState specified with an enum
     //private TaskState taskState;
 
     // == Task Constructor
-    public Task(String title, String body) {
+    public Task(String title, String body, String image) {
         this.title = title;
         this.body = body;
+        this.image = image;
         this.taskState = TaskState.NEW;
+
     }
 
     // == Overloaded Task Constructor for AWS method getAllTasksCallback()
@@ -81,6 +83,10 @@ public class Task {
 
     public TaskState getTaskState() {
         return taskState;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     @Override

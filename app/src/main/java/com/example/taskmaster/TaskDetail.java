@@ -23,7 +23,16 @@ public class TaskDetail extends AppCompatActivity {
 
         // Gets the body of the task to render it
         String taskBody = getIntent().getStringExtra("taskBody");
-        TextView textView = findViewById(R.id.task_detail_desc);
-        textView.setText(taskBody);
+        TextView bodyView = findViewById(R.id.task_detail_desc);
+        bodyView.setText(taskBody);
+
+        // == Get the String of the image to ultimately render it
+        // get the string from the intent
+        String taskImage = getIntent().getStringExtra("taskImage");
+        TextView imageView = findViewById(R.id.testImageString);
+        imageView.setText(taskImage);
+
+        // plug the string into transferUtility to download image from S3
+
     }
 }
