@@ -188,7 +188,7 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
                 EditText taskBody = findViewById(R.id.taskDescription);
                 String stringTitle = taskTitle.getText().toString();
                 String stringBody = taskBody.getText().toString();
-                Task newTask = new Task(stringTitle, stringBody);
+                Task newTask = new Task(stringTitle, stringBody, null);
                 // add task to dynamoDB
                 runAddTaskMutation(newTask);
 

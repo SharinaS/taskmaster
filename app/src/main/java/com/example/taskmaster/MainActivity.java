@@ -218,54 +218,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         this.startActivity(i);
     }
 
-//     //======== Query the AWS DynamoDB for All Tasks to Get Team Names ==============
-//
-//    public void queryAllTasks() {
-//
-//        awsAppSyncClient.query(ListTasksQuery.builder().build())
-//                .responseFetcher(AppSyncResponseFetchers.NETWORK_ONLY)
-//                .enqueue(getAllTasksCallback);
-//    }
-//
-//    // **** This method should produce an id that can be used in queryTeamTasks... but it's not yet working *******
-//    public GraphQLCall.Callback<ListTasksQuery.Data> getAllTasksCallback = new GraphQLCall.Callback<ListTasksQuery.Data>() {
-//        @Override
-//        public void onResponse(@Nonnull final com.apollographql.apollo.api.Response<ListTasksQuery.Data> response) {
-//            Handler handlerForMainThread = new Handler(Looper.getMainLooper()){
-//                @Override
-//                public void handleMessage(Message inputMessage) {
-//                    List<ListTasksQuery.Item> items = response.data().listTasks().items();
-//
-//                    Log.i("idInfo", teamname);
-//
-//                    teamId = "";
-//
-//                    for(ListTasksQuery.Item item : items) {
-//                        Log.i("items", item.toString());
-//
-//                        //Log.i("idInfo", item.team().id()); // gets team Id
-//                        //Log.i("nameInfo", item.team().name());
-//
-//                        if(teamname.equals("team")) {
-//                            teamId = item.team().id(); // now, put that teamId into queryTeamTasks id
-//                            Log.i("idInfo", teamId);
-//                        } else if (teamname.equals(item.team().id())){
-//                            Log.i("idInfo", "teamname doesn't match");
-//                        }
-//                    }
-//                    Log.i("itemAdded", taskTeamNames.toString());
-//
-//                }
-//            };
-//
-//            handlerForMainThread.obtainMessage().sendToTarget();
-//        }
-//
-//        @Override
-//        public void onFailure(@Nonnull ApolloException e) {
-//            Log.e("graphqlgetall", e.getMessage());
-//        }
-//    };
 
 
 
@@ -292,8 +244,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                 final LinkedList<Task> appTasks = new LinkedList<>();
 
                 for(GetTeamQuery.Item task : tasks) {
+                    Log.i(TAG, "task image info is " + task.image());
                     Log.i("taskTitle", task.title());
-                    appTasks.add(new Task(task.title(), task.body()));
+                    appTasks.add(new Task(task.title(), task.body(), task.image()));
                 }
                 Handler handler = new Handler(Looper.getMainLooper()) {
                     @Override
@@ -321,6 +274,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         // add extra info about that task
         clickedOnTask.putExtra("task", task.getTitle());
         clickedOnTask.putExtra("taskBody", task.getBody());
+        clickedOnTask.putExtra("taskImage", task.getImage());
 
         // start the activity
         MainActivity.this.startActivity(clickedOnTask);
