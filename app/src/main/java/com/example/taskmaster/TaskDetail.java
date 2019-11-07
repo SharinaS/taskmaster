@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
@@ -12,6 +13,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
@@ -37,10 +39,18 @@ public class TaskDetail extends AppCompatActivity {
         bodyView.setText(taskBody);
 
         // == Get the String of the image to ultimately render it
+
         // get the string from the intent
         String taskImageStr = getIntent().getStringExtra("taskImage");
-        TextView imageView = findViewById(R.id.testImageString);
-        imageView.setText(taskImageStr);
+
+//        TextView imageView = findViewById(R.id.testImageString);
+//        imageView.setText(taskImageStr);
+
+        // Use Picasso to display the image
+        Picasso.get().load(
+                "https://taskmaster288ee44745fb44eaa8db972bda84b42f-local.s3.us-west-2.amazonaws.com/"
+                        + taskImageStr).into((ImageView)findViewById(R.id.taskImageShow));
+
 
 //        // plug the string into transferUtility to download image from S3
 //        TransferUtility transferUtility =
