@@ -199,6 +199,21 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
 
     }
 
+    // ============== methods from spinner
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        teamName = teams.get(position).id();
+        Log.i("sharina", teamName); // shows the id that is in the database of the team chosen in dropdown
+
+        teamIdFromDB = teams.get(position).id();
+        teamNameFromDB = teams.get(position).name();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
     // ============= Add Task Stuff to AWS Amplify Database (with a Mutation) ==============
     // Starting code from https://aws-amplify.github.io/docs/android/start
     public void runAddTaskMutation(Task task) {
@@ -224,19 +239,6 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
             Log.e("graphql insert", e.getMessage());
         }
     };
-    // =========================
-
-    // methods from spinner
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        teamName = teams.get(position).id();
-        Log.i("sharina", teamName); // shows the id that is in the database of the team chosen in dropdown
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 
 
     // =========== Pick a File and Upload to Cloud Using S3 ================

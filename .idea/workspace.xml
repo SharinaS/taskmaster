@@ -27,10 +27,7 @@
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/AddTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/AddTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/Task.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/TaskDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/TaskDetail.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_task_detail.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_task_detail.xml" afterDir="false" />
     </list>
@@ -72,8 +69,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/AddTask.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="190" column="69" selection-start-line="190" selection-start-column="69" selection-end-line="190" selection-end-column="69" />
+            <state relative-caret-position="105">
+              <caret line="208" column="52" selection-start-line="208" selection-start-column="52" selection-end-line="208" selection-end-column="52" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/Settings.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="171">
+              <caret line="120" column="86" lean-forward="true" selection-start-line="119" selection-start-column="8" selection-end-line="120" selection-end-column="86" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -90,8 +99,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/TaskDetail.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="28" column="14" selection-start-line="28" selection-start-column="14" selection-end-line="28" selection-end-column="14" />
+            <state relative-caret-position="33">
+              <caret line="39" column="41" lean-forward="true" selection-start-line="39" selection-start-column="41" selection-end-line="39" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -108,8 +117,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="276" column="61" selection-start-line="276" selection-start-column="61" selection-end-line="276" selection-end-column="61" />
+            <state relative-caret-position="133">
+              <caret line="115" column="31" selection-start-line="115" selection-start-column="31" selection-end-line="115" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -143,9 +152,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>taskTeamNames</find>
-      <find>tasks</find>
-      <find>listtasksquery</find>
       <find>spinner</find>
       <find>username</find>
       <find>logout</find>
@@ -173,6 +179,9 @@
       <find>userpo</find>
       <find>picolas</find>
       <find>userState</find>
+      <find>teamIdFromDB</find>
+      <find>log</find>
+      <find>download</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -210,8 +219,8 @@
         <option value="$PROJECT_DIR$/amplify/backend/api/taskmaster/schema.graphql" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/Task.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/AddTask.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_task_detail.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/AddTask.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/TaskDetail.java" />
       </list>
     </option>
@@ -219,7 +228,7 @@
   <component name="ProjectFrameBounds">
     <option name="y" value="23" />
     <option name="width" value="1267" />
-    <option name="height" value="709" />
+    <option name="height" value="759" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -713,7 +722,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1267" height="709" extended-state="0" />
+    <frame x="0" y="23" width="1267" height="759" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Structure" order="0" sideWeight="0.50224215" side_tool="true" weight="0.2234461" />
@@ -723,15 +732,15 @@
       <window_info id="Build Variants" order="4" side_tool="true" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Resources Explorer" order="6" weight="0.32956383" />
-      <window_info active="true" content_ui="combo" id="Project" order="7" sideWeight="0.4955157" visible="true" weight="0.19591837" />
+      <window_info active="true" content_ui="combo" id="Project" order="7" sideWeight="0.4955157" visible="true" weight="0.14367346" />
       <window_info id="Captures" order="8" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Logcat" order="0" weight="0.11784512" />
-      <window_info anchor="bottom" id="TODO" order="1" weight="0.23564954" />
+      <window_info anchor="bottom" id="TODO" order="1" visible="true" weight="0.11801242" />
       <window_info anchor="bottom" id="Debug" order="2" weight="0.28846154" />
       <window_info anchor="bottom" id="Terminal" order="3" weight="0.32930514" />
       <window_info anchor="bottom" id="Version Control" order="4" weight="0.32930514" />
       <window_info anchor="bottom" id="Event Log" order="5" side_tool="true" />
-      <window_info anchor="bottom" id="Build" order="6" visible="true" weight="0.3013468" />
+      <window_info anchor="bottom" id="Build" order="6" weight="0.04658385" />
       <window_info anchor="bottom" id="Android Profiler" order="7" />
       <window_info anchor="bottom" id="Run" order="8" weight="0.36700338" />
       <window_info anchor="bottom" id="Find" order="9" weight="0.32779455" />
@@ -976,16 +985,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/Settings.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
-          <caret line="28" column="32" lean-forward="true" selection-start-line="28" selection-start-column="32" selection-end-line="28" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/amplify/backend/api/taskmaster/schema.graphql">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -1005,31 +1004,41 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/AddTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="190" column="69" selection-start-line="190" selection-start-column="69" selection-end-line="190" selection-end-column="69" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_task_detail.xml">
+      <provider editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="android-designer2" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/MainActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/Settings.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="276" column="61" selection-start-line="276" selection-start-column="61" selection-end-line="276" selection-end-column="61" />
+        <state relative-caret-position="171">
+          <caret line="120" column="86" lean-forward="true" selection-start-line="119" selection-start-column="8" selection-end-line="120" selection-end-column="86" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_task_detail.xml">
-      <provider editor-type-id="text-editor" />
-      <provider selected="true" editor-type-id="android-designer2" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="115" column="31" selection-start-line="115" selection-start-column="31" selection-end-line="115" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/AddTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="208" column="52" selection-start-line="208" selection-start-column="52" selection-end-line="208" selection-end-column="52" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/TaskDetail.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="28" column="14" selection-start-line="28" selection-start-column="14" selection-end-line="28" selection-end-column="14" />
+        <state relative-caret-position="33">
+          <caret line="39" column="41" lean-forward="true" selection-start-line="39" selection-start-column="41" selection-end-line="39" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
