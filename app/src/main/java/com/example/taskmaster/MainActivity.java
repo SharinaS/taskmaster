@@ -288,6 +288,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
                 // ToDo: Fix potential for null pointer exception when database is empty -- if (tasks or something != null), do the following stuff
                 List<GetTeamQuery.Item> tasks = response.data().getTeam().listOfTasks().items();
+
                 final LinkedList<Task> appTasks = new LinkedList<>();
 
                 for(GetTeamQuery.Item task : tasks) {

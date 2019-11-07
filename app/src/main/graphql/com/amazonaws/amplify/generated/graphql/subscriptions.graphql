@@ -5,6 +5,7 @@ subscription OnCreateTask {
     title
     body
     taskState
+    image
     team {
       id
       name
@@ -20,6 +21,7 @@ subscription OnUpdateTask {
     title
     body
     taskState
+    image
     team {
       id
       name
@@ -35,6 +37,7 @@ subscription OnDeleteTask {
     title
     body
     taskState
+    image
     team {
       id
       name
@@ -54,6 +57,7 @@ subscription OnCreateTeam {
         title
         body
         taskState
+        image
       }
       nextToken
     }
@@ -69,6 +73,7 @@ subscription OnUpdateTeam {
         title
         body
         taskState
+        image
       }
       nextToken
     }
@@ -84,6 +89,7 @@ subscription OnDeleteTeam {
         title
         body
         taskState
+        image
       }
       nextToken
     }

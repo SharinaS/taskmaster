@@ -6,9 +6,11 @@ Taskmaster is an app built with Java on Android Studio that allows a user to kee
 ## Contributor
 Sharina Stubbs
 
-# Screenshots of App:
-### Homepage
-![homepage screenshot](screenshots/homepage.jpg)
+# Working on the App
+## Terminal commands of note
+For example, when changing the schema:
+* amplify status
+* amplify push
 
 # Daily Change Log in 2019:
 ## October 22: Day 1
