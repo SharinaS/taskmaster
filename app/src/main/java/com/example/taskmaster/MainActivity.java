@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         teamId = prefs.getString("teamId", "2b6533c1-931f-4aef-91a1-ccf65635b4ed");
         nameOfTeam = prefs.getString("nameOfTeam", "Team One");
 
-        //this.teamname = prefs.getString("teamname", "team");
 
         //Log.w(TAG, username);
 
@@ -81,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
         // ==== Call Method ==============
         // run graphql queries
-        //queryAllTasks();
         queryTeamTasks();
     }
 
@@ -91,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // for starting of app, to show a team's tasks
+        //======= for starting of app, to show a team's tasks =====
         teamId = "2b6533c1-931f-4aef-91a1-ccf65635b4ed";
         nameOfTeam = "Team One";
 
@@ -144,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
             }
             @Override
             public void onError(Exception e) {
-
+                Log.e("sharina.u", e.getMessage());
             }
         });
 
@@ -219,15 +217,12 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     }
 
 
-
-
     // ======== Query the AWS DynamoDB for Team Task Info ==============
 
     public void queryTeamTasks() {
 
         // hardcoded id from teamOne in database
         //String id = "2b6533c1-931f-4aef-91a1-ccf65635b4ed";
-
 
         // create query
         GetTeamQuery query = GetTeamQuery.builder().id(teamId).build();
@@ -237,24 +232,25 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
             @Override
             public void onResponse(@Nonnull Response<GetTeamQuery.Data> response) {
+                
+                if (tasks != null) {
+                    List<GetTeamQuery.Item> tasks = response.data().getTeam().listOfTasks().items();
 
-                // ToDo: Fix potential for null pointer exception when database is empty -- if (tasks or something != null), do the following stuff
-                List<GetTeamQuery.Item> tasks = response.data().getTeam().listOfTasks().items();
+                    final LinkedList<Task> appTasks = new LinkedList<>();
 
-                final LinkedList<Task> appTasks = new LinkedList<>();
-
-                for(GetTeamQuery.Item task : tasks) {
-                    Log.i(TAG, "task image info is " + task.image());
-                    Log.i("taskTitle", task.title());
-                    appTasks.add(new Task(task.title(), task.body(), task.image()));
-                }
-                Handler handler = new Handler(Looper.getMainLooper()) {
-                    @Override
-                    public void handleMessage (Message message) {
-                        recyclerView.setAdapter(new TaskAdapter(appTasks, MainActivity.this));
+                    for(GetTeamQuery.Item task : tasks) {
+                        Log.i(TAG, "task image info is " + task.image());
+                        Log.i("taskTitle", task.title());
+                        appTasks.add(new Task(task.title(), task.body(), task.image()));
                     }
-                };
-                handler.obtainMessage().sendToTarget();
+                    Handler handler = new Handler(Looper.getMainLooper()) {
+                        @Override
+                        public void handleMessage (Message message) {
+                            recyclerView.setAdapter(new TaskAdapter(appTasks, MainActivity.this));
+                        }
+                    };
+                    handler.obtainMessage().sendToTarget();
+                }
             }
 
             @Override
