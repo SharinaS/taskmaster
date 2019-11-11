@@ -1,33 +1,41 @@
 {
-	"api": {
-		"taskmaster": {
-			"service": "AppSync",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"authConfig": {
-					"additionalAuthenticationProviders": [],
-					"defaultAuthentication": {
-						"authenticationType": "API_KEY",
-						"apiKeyConfig": {
-							"description": "taskmasterapikey",
-							"apiKeyExpirationDays": "365"
-						}
-					}
-				}
-			}
-		}
-	},
-	"auth": {
-		"taskmaster205b81f4": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": []
-		}
-	},
-	"storage": {
-		"s366cd1d85": {
-			"service": "S3",
-			"providerPlugin": "awscloudformation"
-		}
-	}
+    "api": {
+        "taskmaster": {
+            "service": "AppSync",
+            "providerPlugin": "awscloudformation",
+            "output": {
+                "authConfig": {
+                    "additionalAuthenticationProviders": [],
+                    "defaultAuthentication": {
+                        "authenticationType": "API_KEY",
+                        "apiKeyConfig": {
+                            "description": "taskmasterapikey",
+                            "apiKeyExpirationDays": "365"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "auth": {
+        "taskmaster205b81f4": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": []
+        }
+    },
+    "storage": {
+        "s366cd1d85": {
+            "service": "S3",
+            "providerPlugin": "awscloudformation"
+        }
+    },
+    "notifications": {
+        "taskmasterGrL2H": {
+            "service": "Pinpoint",
+            "channels": [
+                "FCM"
+            ]
+        }
+    }
 }
