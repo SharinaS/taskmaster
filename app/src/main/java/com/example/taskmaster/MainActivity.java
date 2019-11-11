@@ -1,9 +1,12 @@
 package com.example.taskmaster;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -26,9 +29,15 @@ import com.amazonaws.mobile.client.UserStateDetails;
 import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
 import com.amazonaws.mobileconnectors.appsync.fetcher.AppSyncResponseFetchers;
+import com.amazonaws.mobileconnectors.pinpoint.PinpointConfiguration;
+import com.amazonaws.mobileconnectors.pinpoint.PinpointManager;
 import com.apollographql.apollo.GraphQLCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -101,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                 .context(getApplicationContext())
                 .awsConfiguration(new AWSConfiguration(getApplicationContext()))
                 .build();
+
 
         // ====== Initialization for AWS cognito =======
         AWSMobileClient.getInstance().initialize(getApplicationContext(), new Callback<UserStateDetails>() {
@@ -207,7 +217,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
             }
         });
 
-
+        // Calls the method that is involved in Push Notifications with AWS Pinpoint
+        getPinpointManager(getApplicationContext());
     }
 
     // === Starts activity over in Settings ===
@@ -232,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
             @Override
             public void onResponse(@Nonnull Response<GetTeamQuery.Data> response) {
-                
+
                 if (tasks != null) {
                     List<GetTeamQuery.Item> tasks = response.data().getTeam().listOfTasks().items();
 
@@ -274,6 +285,48 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
         // start the activity
         MainActivity.this.startActivity(clickedOnTask);
+    }
+
+    // ====== Deals with Push Notifications using AWS Pinpoint =========
+    private static PinpointManager pinpointManager;
+
+    public static PinpointManager getPinpointManager(final Context applicationContext) {
+        if (pinpointManager == null) {
+            final AWSConfiguration awsConfig = new AWSConfiguration(applicationContext);
+            AWSMobileClient.getInstance().initialize(applicationContext, awsConfig, new Callback<UserStateDetails>() {
+                        @Override
+                        public void onResult(UserStateDetails result) {
+                            Log.i("INIT", result.getUserState().toString());
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Log.e("INIT", "Initialization error.", e);
+                        }
+                    });
+
+                    PinpointConfiguration pinpointConfig = new PinpointConfiguration(
+                            applicationContext,
+                            AWSMobileClient.getInstance(),
+                            awsConfig);
+
+            pinpointManager = new PinpointManager(pinpointConfig);
+
+            FirebaseInstanceId.getInstance().getInstanceId()
+                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                        @Override
+                        public void onComplete(@NonNull com.google.android.gms.tasks.Task<InstanceIdResult> task) {
+                            if (!task.isSuccessful()) {
+                                Log.w(TAG, "getInstanceId failed", task.getException());
+                                return;
+                            }
+                            final String token = task.getResult().getToken();
+                            Log.d(TAG, "Registering push notifications token: " + token);
+                            pinpointManager.getNotificationClient().registerDeviceToken(token);
+                        }
+                    });
+        }
+        return pinpointManager;
     }
 
 }

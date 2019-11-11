@@ -86,7 +86,12 @@ Never finished:
 ## November 7: Day 10
 * If a user attaches a file to a task, that file is uploaded to S3, and associated with that task.
 * On the Task detail activity, if there is a file that is an image associated with a particular Task, currently a string is displayed that shows the key to the file
-* Future task: Display the image from the DB in the detail view. 
+* Future task: Display the image from the DB in the detail view. \
+
+## November 11: Day 11
+* Worked with PinPoint and Firebase today to set up Push Notifications.
+* Set up backend to deal with Pinpoint
+* Added Firebase to app
 
 
 # Resources:
@@ -103,6 +108,10 @@ Never finished:
 * [OkHttp](https://square.github.io/okhttp)
 * [Android Amplify Framework - Getting Started](https://aws-amplify.github.io/docs/android/start)
 * [Amplify Getting Started](https://aws-amplify.github.io/docs/)
+## Uploading and downloading files from AWS S3
 * [Android File Picker](https://developer.android.com/guide/topics/providers/document-provider)
 * [Amplify S3](https://aws-amplify.github.io/docs/android/storage)
 * [Download a File from S3](https://docs.aws.amazon.com/aws-mobile/latest/developerguide/mobile-hub-add-aws-mobile-user-data-storage.html#mobile-hub-add-aws-user-data-storage-download)
+## Push Notifications
+* [Android Push Notifications](https://aws-amplify.github.io/docs/android/push-notifications)
+* [Setting Up FCM/GCM for Push Notifications](https://aws-amplify.github.io/docs/android/push-notifications-setup-fcm)

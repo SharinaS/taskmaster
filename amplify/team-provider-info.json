@@ -13,6 +13,13 @@
         "categories": {
             "auth": {
                 "taskmaster205b81f4": {}
+            },
+            "notifications": {
+                "Pinpoint": {
+                    "Name": "taskmasterGrL2H-local",
+                    "Id": "298f9e95b23941689c759eab31594d99",
+                    "Region": "us-west-2"
+                }
             }
         }
     }

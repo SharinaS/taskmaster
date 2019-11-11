@@ -57,4 +57,13 @@ dependencies {
 
     // For dealing with a file upload
     implementation 'com.amazonaws:aws-android-sdk-s3:2.15.+'
+
+    // For Push notifications with AWS Pinpoint and Firebase
+    implementation 'com.google.android.gms:play-services-auth:15.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-messaging:17.3.0'
+    implementation 'com.amazonaws:aws-android-sdk-pinpoint:2.15.+'
+
 }
+
+apply plugin: 'com.google.gms.google-services'
