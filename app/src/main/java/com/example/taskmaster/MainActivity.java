@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                     };
                     handler.obtainMessage().sendToTarget();
                     Log.i("sharina.u", "success in setting username!");
+                    getPinpointManager(getApplicationContext());
 
                 }
             }
@@ -217,8 +218,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
             }
         });
 
-        // Calls the method that is involved in Push Notifications with AWS Pinpoint
-        getPinpointManager(getApplicationContext());
     }
 
     // === Starts activity over in Settings ===
@@ -293,17 +292,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     public static PinpointManager getPinpointManager(final Context applicationContext) {
         if (pinpointManager == null) {
             final AWSConfiguration awsConfig = new AWSConfiguration(applicationContext);
-            AWSMobileClient.getInstance().initialize(applicationContext, awsConfig, new Callback<UserStateDetails>() {
-                        @Override
-                        public void onResult(UserStateDetails result) {
-                            Log.i("INIT", result.getUserState().toString());
-                        }
 
-                        @Override
-                        public void onError(Exception e) {
-                            Log.e("INIT", "Initialization error.", e);
-                        }
-                    });
 
                     PinpointConfiguration pinpointConfig = new PinpointConfiguration(
                             applicationContext,

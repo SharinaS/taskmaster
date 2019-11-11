@@ -89,10 +89,11 @@ Never finished:
 * Future task: Display the image from the DB in the detail view. \
 
 ## November 11: Day 11
-* Worked with PinPoint and Firebase today to set up Push Notifications.
+* Worked with PinPoint and Firebase today to set up Push Notifications - Added Amplify Notifications to application to allow you to send notifications using the Pinpoint console or Firebase Console.
 * Set up backend to deal with Pinpoint
 * Added Firebase to app
 
+![homepage screenshot](screenshots/push-notification-from-Firebase.jpg)
 
 # Resources:
 * [Android Buttons](https://developer.android.com/guide/topics/ui/controls/button.html)
