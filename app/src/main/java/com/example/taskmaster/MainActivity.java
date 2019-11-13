@@ -147,8 +147,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                     };
                     handler.obtainMessage().sendToTarget();
                     Log.i("sharina.u", "success in setting username!");
-                    getPinpointManager(getApplicationContext());
 
+                    // Start code dealing with push notifications
+                    getPinpointManager(getApplicationContext());
                 }
             }
             @Override
