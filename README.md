@@ -98,6 +98,10 @@ Never finished:
 ## November 12: Day 12
 * Pending: Add an intent filter to your application such that a user can hit the “share” button on an image in another application, choose TaskMaster as the app to share that image with, and be taken directly to the Add a Task activity with that image pre-selected.
 
+## November 13: Day 13
+* Pending: app will add the user’s location to a task automatically when that task is created.
+* When the user adds a task, their location should be retrieved and included as part of the saved Task.
+* On the Task Detail activity, the location of a Task should be displayed if it exists.
 
 # Resources:
 * [Android Buttons](https://developer.android.com/guide/topics/ui/controls/button.html)
