@@ -95,6 +95,10 @@ Never finished:
 
 ![homepage screenshot](screenshots/push-notification-from-Firebase.jpg)
 
+## November 12: Day 12
+* Pending: Add an intent filter to your application such that a user can hit the “share” button on an image in another application, choose TaskMaster as the app to share that image with, and be taken directly to the Add a Task activity with that image pre-selected.
+
+
 # Resources:
 * [Android Buttons](https://developer.android.com/guide/topics/ui/controls/button.html)
 * [Android UI Events](https://developer.android.com/guide/topics/ui/ui-events.html)
@@ -116,3 +120,6 @@ Never finished:
 ## Push Notifications
 * [Android Push Notifications](https://aws-amplify.github.io/docs/android/push-notifications)
 * [Setting Up FCM/GCM for Push Notifications](https://aws-amplify.github.io/docs/android/push-notifications-setup-fcm)
+
+## Getting location data
+* [Get the last known location](https://developer.android.com/training/location/retrieve-current)

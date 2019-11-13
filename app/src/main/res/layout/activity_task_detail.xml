@@ -42,4 +42,14 @@
         app:layout_constraintTop_toBottomOf="@+id/task_detail_desc"
         app:srcCompat="@drawable/ic_launcher_background" />
 
+    <TextView
+        android:id="@+id/seeLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Location, When Available"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskImageShow" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

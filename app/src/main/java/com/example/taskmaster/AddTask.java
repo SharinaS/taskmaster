@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,6 +45,9 @@ import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.apollographql.apollo.GraphQLCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -55,6 +59,9 @@ import javax.annotation.Nonnull;
 import type.CreateTaskInput;
 import type.CreateTeamInput;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 
 public class AddTask extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -78,10 +85,33 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
     public String teamIdFromDB = null;
     public String teamNameFromDB = null;
 
+    // accessing a location
+    private FusedLocationProviderClient mLocationProviderClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
+
+        // ======= Location Data Stuff ============
+        ActivityCompat.requestPermissions(this, new String[]{READ_EXTERNAL_STORAGE, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION}, 10);
+
+        mLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        mLocationProviderClient.getLastLocation().addOnSuccessListener(AddTask.this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(final Location location) {
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        
+                    }
+                });
+            }
+        });
+
+
+
 
 
          //======= Upload File to AWS with TransferUtility==============
@@ -92,21 +122,6 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
 
         String[] permissions = {READ_EXTERNAL_STORAGE};
         ActivityCompat.requestPermissions(this, permissions, 1);
-
-        // Initialize the AWSMobileClient if not initialized
-//        AWSMobileClient.getInstance().initialize(getApplicationContext(), new Callback<UserStateDetails>() {
-//            @Override
-//            public void onResult(UserStateDetails result) {
-//                Log.i(TAG, "AWSMobileClient initialized. User State is " + result.getUserState().toString());
-//                uploadWithTransferUtility();
-//            }
-//
-//            @Override
-//            public void onError(Exception e) {
-//                Log.e(TAG, "Initialization error.", e);
-//
-//            }
-//        });
 
 
         // Connect to AWS
@@ -188,6 +203,7 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
                 EditText taskBody = findViewById(R.id.taskDescription);
                 String stringTitle = taskTitle.getText().toString();
                 String stringBody = taskBody.getText().toString();
+
                 Task newTask = new Task(stringTitle, stringBody, null);
                 // add task to dynamoDB
                 runAddTaskMutation(newTask);
