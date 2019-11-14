@@ -99,9 +99,17 @@ Never finished:
 * Pending: Add an intent filter to your application such that a user can hit the “share” button on an image in another application, choose TaskMaster as the app to share that image with, and be taken directly to the Add a Task activity with that image pre-selected.
 
 ## November 13: Day 13
-* Pending: app will add the user’s location to a task automatically when that task is created.
+Pending: 
+* app will add the user’s location to a task automatically when that task is created.
 * When the user adds a task, their location should be retrieved and included as part of the saved Task.
 * On the Task Detail activity, the location of a Task should be displayed if it exists.
+
+## November 14: Day 14
+* Set up basic code for analytics with pinpoint in MainActivity.
+Pending:
+* Using Amplify and Pinpoint, add session analytics to your application.
+
+![analytics screenshot](screenshots/analytics.png)
 
 # Resources:
 * [Android Buttons](https://developer.android.com/guide/topics/ui/controls/button.html)
@@ -127,3 +135,6 @@ Never finished:
 
 ## Getting location data
 * [Get the last known location](https://developer.android.com/training/location/retrieve-current)
+
+## Analytics
+* [Pinpoint analytics](https://aws-amplify.github.io/docs/android/analytics)
