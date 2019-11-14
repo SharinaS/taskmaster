@@ -321,14 +321,14 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         return pinpointManager;
     }
 
-    // Stop analytics session
-    @Override
-    protected void onDestroy() {
-        MainActivity.super.onDestroy();
-
-        pinpointManager.getSessionClient().stopSession();
-        pinpointManager.getAnalyticsClient().submitEvents();
-    }
+//     //Stop analytics session
+//    @Override
+//    protected void onDestroy() {
+//        MainActivity.super.onDestroy();
+//
+//        pinpointManager.getSessionClient().stopSession();
+//        pinpointManager.getAnalyticsClient().submitEvents();
+//    }
 
 }
 

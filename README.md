@@ -111,6 +111,24 @@ Pending:
 
 ![analytics screenshot](screenshots/analytics.png)
 
+# User Stories
+* As a busy person, I want an easy to use app that lets me list tasks by team.
+* As a user, I want to be able to see an image associated with a task.
+* as a user on a team, I want to see what tasks have been allocated to my team. 
+* As a user, I want to be able to create tasks
+* As a user I want to choose what team I'm on.
+* As a user, I want to specify a title, description, team and picture for a task.
+
+Future User Stories:
+* As a user, I want to see the location for the task that needs to be done.
+* As a user, I want a delete button to remove tasks
+* As a user, I want to be able to get notifications about multiple teams because I do multiple things.
+* As a user I want to have a task able to be marked as completed, in progress, or to be done. 
+* As a user I also want to specify a location for a task.
+* As a user, I want to be able to assign tasks to a single user.
+* As a user, I want to be able to view my own tasks.
+* As a user I want to be able to share my tasks outside of my application. 
+
 # Resources:
 * [Android Buttons](https://developer.android.com/guide/topics/ui/controls/button.html)
 * [Android UI Events](https://developer.android.com/guide/topics/ui/ui-events.html)
