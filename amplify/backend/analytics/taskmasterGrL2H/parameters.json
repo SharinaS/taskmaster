@@ -1,0 +1,21 @@
+{
+    "appName": "taskmasterGrL2H",
+    "roleName": "pinpointLambdaRole842600f5",
+    "cloudWatchPolicyName": "cloudWatchPolicy842600f5",
+    "pinpointPolicyName": "pinpointPolicy842600f5",
+    "authPolicyName": "pinpoint_amplify_842600f5",
+    "unauthPolicyName": "pinpoint_amplify_842600f5",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    },
+    "appId": "298f9e95b23941689c759eab31594d99"
+}

@@ -150,6 +150,10 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
                     // Start code dealing with push notifications
                     getPinpointManager(getApplicationContext());
+
+                    // start session for analytics
+                    final PinpointManager pinpointManager = getPinpointManager(getApplicationContext());
+                    pinpointManager.getSessionClient().startSession();
                 }
             }
             @Override
@@ -218,7 +222,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                 helloTextView.setText("Bye Bye, " + cognitoUsername + "!");
             }
         });
-
     }
 
     // === Starts activity over in Settings ===
@@ -229,7 +232,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
 
     // ======== Query the AWS DynamoDB for Team Task Info ==============
-
     public void queryTeamTasks() {
 
         // hardcoded id from teamOne in database
@@ -317,6 +319,15 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                     });
         }
         return pinpointManager;
+    }
+
+    // Stop analytics session
+    @Override
+    protected void onDestroy() {
+        MainActivity.super.onDestroy();
+
+        pinpointManager.getSessionClient().stopSession();
+        pinpointManager.getAnalyticsClient().submitEvents();
     }
 
 }

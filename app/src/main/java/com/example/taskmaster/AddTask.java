@@ -104,7 +104,7 @@ public class AddTask extends AppCompatActivity implements AdapterView.OnItemSele
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        
+
                     }
                 });
             }
