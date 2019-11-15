@@ -118,6 +118,8 @@ Pending:
 * As a user, I want to be able to create tasks
 * As a user I want to choose what team I'm on.
 * As a user, I want to specify a title, description, team and picture for a task.
+* As a user, I want to be able to select my team.
+* As a user, I want to be able to see details about one specific task. 
 
 Future User Stories:
 * As a user, I want to see the location for the task that needs to be done.
