@@ -24,24 +24,10 @@
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amplify/backend/api/taskmaster/schema.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/amplify/backend/api/taskmaster/schema.graphql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/graphql/schema.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/graphql/schema.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/AllTasks.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/AllTasks.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/TaskDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/TaskDetail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_task_detail.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_task_detail.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/taskmaster.iml" beforeDir="false" afterPath="$PROJECT_DIR$/taskmaster.iml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -118,12 +104,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="81">
-              <caret line="112" lean-forward="true" selection-start-line="112" selection-end-line="112" />
+            <state relative-caret-position="-29">
+              <caret line="183" column="29" selection-start-line="183" selection-start-column="29" selection-end-line="183" selection-end-column="29" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#4587#4588#0" expanded="true" />
-                <element signature="e#4676#4677#0" expanded="true" />
+                <element signature="e#8000#8001#0" expanded="true" />
+                <element signature="e#8089#8090#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -220,9 +206,9 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="13" />
-    <option name="y" value="231" />
+    <option name="y" value="92" />
     <option name="width" value="1267" />
-    <option name="height" value="674" />
+    <option name="height" value="647" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -671,7 +657,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="13" y="231" width="1267" height="674" extended-state="0" />
+    <frame x="13" y="92" width="1267" height="647" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Structure" order="0" sideWeight="0.50224215" side_tool="true" weight="0.2234461" />
@@ -689,7 +675,7 @@
       <window_info anchor="bottom" id="Terminal" order="3" weight="0.32930514" />
       <window_info anchor="bottom" id="Version Control" order="4" weight="0.32930514" />
       <window_info anchor="bottom" id="Event Log" order="5" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Build" order="6" visible="true" weight="0.053667262" />
+      <window_info active="true" anchor="bottom" id="Build" order="6" visible="true" weight="0.14849624" />
       <window_info anchor="bottom" id="Android Profiler" order="7" weight="0.32972136" />
       <window_info anchor="bottom" id="Run" order="8" weight="0.051813472" />
       <window_info anchor="bottom" id="Find" order="9" weight="0.32779455" />
@@ -971,12 +957,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/taskmaster/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="112" lean-forward="true" selection-start-line="112" selection-end-line="112" />
+        <state relative-caret-position="-29">
+          <caret line="183" column="29" selection-start-line="183" selection-start-column="29" selection-end-line="183" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#4587#4588#0" expanded="true" />
-            <element signature="e#4676#4677#0" expanded="true" />
+            <element signature="e#8000#8001#0" expanded="true" />
+            <element signature="e#8089#8090#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -112,21 +112,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                 Log.i("sharina.login", result.getUserState().toString());
 
                 if (result.getUserState().toString().equals("SIGNED_OUT")) {
-                    AWSMobileClient.getInstance().showSignIn(MainActivity.this,
+                    signInUser();
 
-                    // ToDo: SignIn options - can change background image.
-
-                    new com.amazonaws.mobile.client.Callback<UserStateDetails>() {
-                        @Override
-                        public void onResult(UserStateDetails result) {
-                            Log.i("sharina.signin", result.getUserState().toString());
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-                            Log.e("sharina.u",e.getMessage());
-                        }
-                    });
                 } else {
                     Handler handler = new Handler(Looper.getMainLooper()) {
                         @Override
@@ -192,29 +179,34 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
             @Override
             public void onClick(View v) {
 
-                // ToDo: when signout occurs, signin view appears. Move signin code into its own method. See FrontRow Nov 5 2:45pm
-//                AWSMobileClient.getInstance().signOut(
-//                        SignOutOptions.builder().build(), new Callback<Void>() {
-//                            @Override
-//                            public void onResult(Void result) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onError(Exception e) {
-//
-//                            }
-//                        }
-//                );
-
                 String cognitoUsername = AWSMobileClient.getInstance().getUsername();
                 AWSMobileClient.getInstance().signOut();
+                signInUser();
 
                 // change greeting on main activity to a goodbye
                 TextView helloTextView = findViewById(R.id.helloTextView);
                 helloTextView.setText("Bye Bye, " + cognitoUsername + "!");
             }
         });
+    }
+
+    // === Cognito SignIn ======
+    private void signInUser() {
+        AWSMobileClient.getInstance().showSignIn(MainActivity.this,
+
+                // ToDo: SignIn options - can change background image.
+
+                new com.amazonaws.mobile.client.Callback<UserStateDetails>() {
+                    @Override
+                    public void onResult(UserStateDetails result) {
+                        Log.i("sharina.signin", result.getUserState().toString());
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Log.e("sharina.u",e.getMessage());
+                    }
+                });
     }
 
     // === Starts activity over in Settings ===
