@@ -1,23 +1,39 @@
 package com.example.taskmaster;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Update;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amazonaws.amplify.generated.graphql.UpdateTaskMutation;
 import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.apollographql.apollo.GraphQLCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
+import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
+import javax.annotation.Nonnull;
+
+
+import type.UpdateTaskInput;
+
 public class TaskDetail extends AppCompatActivity {
+    AWSAppSyncClient awsAppSyncClient;
+    private static final String TAG = "sharina";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +44,7 @@ public class TaskDetail extends AppCompatActivity {
 
         // get the data added to the intent & use it to display this activity
         String task = getIntent().getStringExtra("task");
+
         // grab the label from the page
         TextView titleView = findViewById(R.id.detailTaskTitle);
         // set its text to be the item name
@@ -52,45 +69,31 @@ public class TaskDetail extends AppCompatActivity {
                         + taskImageStr).into((ImageView)findViewById(R.id.taskImageShow));
 
 
-//        // plug the string into transferUtility to download image from S3
-//        TransferUtility transferUtility =
-//                TransferUtility.builder()
-//                        .context(getApplicationContext())
-//                        .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
-//                        .s3Client(new AmazonS3Client(AWSMobileClient.getInstance()))
-//                        .build();
-//
-//        TransferObserver downloadObserver =
-//                transferUtility.download(
-//                        taskImageStr,
-//                        new File(getApplicationContext().getFilesDir(), "downloadFromAws.jpg"));
-//
-//        downloadObserver.setTransferListener(new TransferListener() {
-//
-//            @Override
-//            public void onStateChanged(int id, TransferState state) {
-//                // grab data from downloaded file, download.txt to set image view
-//                // set the taskImageShow
-//                // getExternalFilesDir(Enironment.Directory_PICTURES)
-//                // Set image as a bitmap, then decode the file with .decodeFile(takes in the absolute path to the file
-//
-//
-//            }
-//
-//            @Override
-//            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-//                float percentDonef = ((float) bytesCurrent / (float) bytesTotal) * 100;
-//                int percentDone = (int) percentDonef;
-//
-//                Log.i("Your Activity", "   ID:" + id + "   bytesCurrent: " + bytesCurrent
-//                        + "   bytesTotal: " + bytesTotal + " " + percentDone + "%");
-//            }
-//
-//            @Override
-//            public void onError(int id, Exception ex) {
-//
-//            }
-//        });
+    }
+
+    public void buttonToChangeDB(View view){
+
+        String idStuff = getIntent().getStringExtra("taskId"); // from allTasks page
+        Log.i(TAG, "Button was pushed");
+
+        UpdateTaskInput updateTaskInput = UpdateTaskInput.builder()
+                .id(idStuff)
+                .title("Picolas Cage is my first love")
+                .build();
+        awsAppSyncClient.mutate(UpdateTaskMutation.builder().input(updateTaskInput).build())
+                .enqueue(new GraphQLCall.Callback<UpdateTaskMutation.Data>() {
+                    @Override
+                    public void onResponse(@Nonnull Response<UpdateTaskMutation.Data> response) {
+                        Log.i(TAG, "Task Title has been Changed!");
+                    }
+
+                    @Override
+                    public void onFailure(@Nonnull ApolloException e) {
+                        Log.i(TAG, "Well, changing the task title did NOT work");
+                    }
+                });
+
+
 
     }
 }
