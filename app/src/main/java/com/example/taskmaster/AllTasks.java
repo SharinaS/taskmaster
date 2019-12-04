@@ -113,6 +113,7 @@ public class AllTasks extends AppCompatActivity implements TaskAdapter.OnTaskIte
         // add extra info about that task
         clickedOnTask.putExtra("task", task.getTitle());
         clickedOnTask.putExtra("taskBody", task.getBody());
+        clickedOnTask.putExtra("taskID", task.getId());  // For TaskDetail page for changeing things button tests
 
         // start the activity
         AllTasks.this.startActivity(clickedOnTask);

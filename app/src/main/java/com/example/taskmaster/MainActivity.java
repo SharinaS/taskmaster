@@ -19,21 +19,19 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.amazonaws.amplify.generated.graphql.GetTeamQuery;
-import com.amazonaws.amplify.generated.graphql.ListTasksQuery;
-import com.amazonaws.amplify.generated.graphql.ListTeamsQuery;
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobile.client.Callback;
-import com.amazonaws.mobile.client.SignInUIOptions;
-import com.amazonaws.mobile.client.SignOutOptions;
 import com.amazonaws.mobile.client.UserStateDetails;
 import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient;
 import com.amazonaws.mobileconnectors.appsync.fetcher.AppSyncResponseFetchers;
 import com.amazonaws.mobileconnectors.pinpoint.PinpointConfiguration;
 import com.amazonaws.mobileconnectors.pinpoint.PinpointManager;
+
 import com.apollographql.apollo.GraphQLCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -57,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
     AWSAppSyncClient awsAppSyncClient;
 
-    private static final String TAG = "MainActivity"; // this helps filter logs
+    private static final String TAG = "MainActivity";
 
 
     @Override
@@ -66,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
 
         // get Username from AWS cognito login
         String cognitoUsername = AWSMobileClient.getInstance().getUsername();
+
         TextView helloTextView = findViewById(R.id.helloTextView);
         helloTextView.setText("Hello, " + cognitoUsername + "!");
         Log.i("sharina.u", cognitoUsername + "");
@@ -77,12 +76,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         teamId = prefs.getString("teamId", "2b6533c1-931f-4aef-91a1-ccf65635b4ed");
         nameOfTeam = prefs.getString("nameOfTeam", "Team One");
 
-
-        //Log.w(TAG, username);
-
-        // Add info from shared prefs to textViews on mainactivity page:
-        //TextView nameTextView = findViewById(R.id.helloTextView);
-        //nameTextView.setText("Hello " + username + "!");
 
         TextView teamTextView = findViewById(R.id.team);
         teamTextView.setText("Team Name: " + nameOfTeam);
@@ -121,19 +114,19 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
                 if (result.getUserState().toString().equals("SIGNED_OUT")) {
                     AWSMobileClient.getInstance().showSignIn(MainActivity.this,
 
-                            // ToDo: SignIn options - can change background image.
+                    // ToDo: SignIn options - can change background image.
 
-                            new com.amazonaws.mobile.client.Callback<UserStateDetails>() {
-                                @Override
-                                public void onResult(UserStateDetails result) {
-                                    Log.i("sharina.signin", result.getUserState().toString());
-                                }
+                    new com.amazonaws.mobile.client.Callback<UserStateDetails>() {
+                        @Override
+                        public void onResult(UserStateDetails result) {
+                            Log.i("sharina.signin", result.getUserState().toString());
+                        }
 
-                                @Override
-                                public void onError(Exception e) {
-                                    Log.e("sharina.u",e.getMessage());
-                                }
-                            });
+                        @Override
+                        public void onError(Exception e) {
+                            Log.e("sharina.u",e.getMessage());
+                        }
+                    });
                 } else {
                     Handler handler = new Handler(Looper.getMainLooper()) {
                         @Override
